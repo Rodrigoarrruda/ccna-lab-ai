@@ -1,5 +1,10 @@
 # Histórico de versões — CCNA Lab AI
 
+## Diagnóstico MySQL no staging — 2026-10-10
+- Rotas `/api/progress` e `/api/study` passaram a separar validação de entrada de falhas de persistência.
+- Falhas de banco registram apenas rota, etapa, request ID e códigos técnicos seguros, sem credenciais, SQL ou mensagens de erro.
+- Orientação de homologação documenta a diferença entre o domínio do app, `MYSQL_HOST` e os bancos `ccna_teste`/`ccna_lab`.
+
 ## Cisco L2.1 — 2026-10-09
 - Conectividade simulada PC1 ↔ PC2, condicionada a portas access, VLANs existentes e trunk com VLAN permitida nas duas pontas.
 - Comandos de ping simulado e tabela MAC calculada a partir da topologia.
