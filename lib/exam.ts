@@ -58,7 +58,7 @@ export const examQuestions: ExamQuestion[] = [
     topic: 'DHCP',
     difficulty: 'Básico',
     prompt: 'Um cliente recebe um endereço 169.254.20.8. Qual hipótese deve ser investigada primeiro?',
-    options: ['Falha na resolução DNS בלבד', 'Falha na obtenção de endereço via DHCP', 'Excesso de rotas estáticas', 'Loop de STP confirmado'],
+    options: ['Falha na resolução DNS', 'Falha na obtenção de endereço via DHCP', 'Excesso de rotas estáticas', 'Loop de STP confirmado'],
     answer: 'Falha na obtenção de endereço via DHCP',
     explanation: 'Um endereço 169.254.0.0/16 é APIPA. Ele indica que o host não recebeu uma concessão DHCP válida; verifique conectividade, VLAN, relay e servidor.',
   },
