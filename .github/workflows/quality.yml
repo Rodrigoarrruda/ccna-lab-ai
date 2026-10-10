@@ -1,21 +1,31 @@
 name: CCNA Lab AI quality gate
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - name: Verify complete source import
+        run: |
+          test -f package.json
+          test -f package-lock.json
+          test -f next.config.mjs
+          test -f lib/labs.ts
+          test -f app/page.tsx
+      - name: Check for accidentally committed environment files
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)|(^|/)(node_modules|\.next)/'; then
+            echo 'Blocked: environment files or generated artifacts tracked'
+            exit 1
+          fi
       - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
