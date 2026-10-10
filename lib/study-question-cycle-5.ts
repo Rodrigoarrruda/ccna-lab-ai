@@ -437,10 +437,10 @@ export const studyQuestionCycle5:ExamQuestion[]=[
     "options": [
       "[name: router, interfaces: [Gi0/0, Gi0/1]]",
       "{name = router; interfaces = (Gi0/0, Gi0/1)}",
-      '{"name":"router","interfaces":["Gi0/0","Gi0/1"]}',
-      "("name","router","interfaces","Gi0/0","Gi0/1")"
+      `{"name":"router","interfaces":["Gi0/0","Gi0/1"]}`,
+      `("name","router","interfaces","Gi0/0","Gi0/1")`
     ],
-    "answer": '{"name":"router","interfaces":["Gi0/0","Gi0/1"]}',
+    "answer": `{"name":"router","interfaces":["Gi0/0","Gi0/1"]}`,
     "explanation": "Objetos JSON usam chaves e pares chave-valor; listas usam colchetes e textos precisam estar entre aspas."
   }
 ];
