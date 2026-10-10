@@ -97,3 +97,17 @@ main{max-width:1680px}header{padding-bottom:4px}h1{font-weight:760}
 
 /* Domínios 4–6 — módulos avançados e roteiros Packet Tracer */
 .advanced-heading{margin-top:30px}.advanced-objectives{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 18px}.advanced-objective{min-width:0}.advanced-objective button{width:100%;height:100%;display:grid;gap:7px;text-align:left;padding:15px;border:1px solid #e2e9ef;border-radius:12px;background:#fff;color:#132238;cursor:pointer;transition:border-color .16s ease,background .16s ease}.advanced-objective button:hover,.advanced-objective.is-open button{border-color:#71cbbd;background:#f2fbfa}.advanced-objective small{color:#167b78;font-size:11px;font-weight:800;letter-spacing:.08em}.advanced-objective strong{font-size:13px;line-height:1.4;font-weight:700}.advanced-objective span{font-size:12px;line-height:1.45;color:#60778b}.advanced-objective em{font-style:normal;color:#167b78;font-size:11px;font-weight:700}.advanced-module{margin-top:4px}.packet-tracer-card{margin-top:22px;padding:18px;border:1px solid #c8e3df;border-radius:12px;background:#f5fbfa}.packet-tracer-card>small{color:#087c77;font-weight:800;letter-spacing:.08em}.packet-tracer-card h4{margin:12px 0 7px}.packet-tracer-card p,.packet-tracer-card li{font-size:13px;line-height:1.55;color:#29465d}.packet-tracer-card ol,.packet-tracer-card ul{margin:8px 0 14px;padding-left:21px}.packet-tracer-note{padding-top:12px;border-top:1px solid #d8ece8;color:#60778b!important;font-size:12px!important}@media(max-width:850px){.advanced-objectives{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.advanced-objectives{grid-template-columns:1fr}.advanced-objective button{padding:13px}}
+
+/* Trilha orientada por missão — contexto antes da lista */
+.study-guide{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:18px;margin:22px 0 10px;padding:22px;border:1px solid #dfe8ec;border-radius:16px;background:#fff}
+.study-guide-copy{display:grid;align-content:start;gap:8px}
+.study-guide-copy h3{margin:4px 0;color:#102b46;font-size:20px}
+.study-guide-copy p{margin:0;color:#5c7183;font-size:14px;line-height:1.6;max-width:620px}
+.study-guide-action{justify-self:start;margin-top:8px;border-radius:999px;font-size:13px}
+.study-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.study-steps>div{display:grid;gap:4px;padding:13px;border:1px solid #e2e9ef;border-radius:11px;background:#f8fbfc}
+.study-steps strong{font:700 12px monospace;color:#0e9185}
+.study-steps span{font-size:13px;font-weight:750;color:#1b4054}
+.study-steps small{font-size:11px;line-height:1.4;color:#6a7f90;letter-spacing:0}
+@media(max-width:700px){.study-guide{grid-template-columns:1fr;padding:18px}.study-steps{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.study-steps{grid-template-columns:1fr}.study-guide-action{width:100%}}
