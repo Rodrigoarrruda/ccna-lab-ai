@@ -17,7 +17,9 @@ assert.equal(isCorrect(examQuestions[0],examQuestions[0].options[0]),false);
 
 const weakId=examQuestions[1].id;
 assert.equal(selectNextQuestion(examQuestions,{},examQuestions[0].id),1);
-assert.equal(selectNextQuestion(examQuestions,{[weakId]:{correct:0,incorrect:1,lastAnswered:1}},examQuestions[0].id),1);
+const history=Object.fromEntries(examQuestions.map(question=>[question.id,{correct:4,incorrect:0,lastAnswered:2}]));
+history[weakId]={correct:0,incorrect:1,lastAnswered:1};
+assert.equal(selectNextQuestion(examQuestions,history,examQuestions[0].id),1);
 assert.equal(countMastered(examQuestions,{[examQuestions[0].id]:{correct:4,incorrect:0,lastAnswered:1}}),1);
 assert.equal(countMastered(examQuestions,{[examQuestions[1].id]:{correct:1,incorrect:1,lastAnswered:1}}),0);
 console.log('PASS: blueprint v1.1, pacote inicial e seleção adaptativa determinística validados.');
