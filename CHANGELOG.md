@@ -12,7 +12,7 @@
 
 ## Cisco L2 — 2026-10-09
 - Modo laboratório com topologia visual, seleção de switches e console CLI.
-- Estado determinístico de VLANs, portas, trunks e EtherChannel.
+- Estado determinístico de VLANs, interfaces, trunks e EtherChannel.
 - Integração com avaliação e reinício de laboratório.
 
 ## Tutor contextual — 2026-10-09
@@ -23,11 +23,14 @@
 > Histórico resumido das alterações presentes nas versões fornecidas. Datas baseadas nos artefatos desta conversa; não substituem um histórico Git.
 
 ## Cisco L2.2 — terminais dos PCs
-Na topologia, selecione PC1 ou PC2. Comandos disponíveis: ipconfig, ping PC1, ping PC2, ping 192.168.10.11, ping 192.168.10.12 e help. IPs fixos. Comandos de PC não afetam a nota.
+- Seleção de PC1/PC2 e console independente com ipconfig, ping e help.
+- Ping calculado a partir do estado determinístico da rede.
 
-## Fluxo de finalização (2.1)
-Após configurar, clique em **Verificar e salvar**. Se todos os critérios forem atendidos e o servidor confirmar o registro, **Finalizar laboratório** fica disponível. Depois, **Iniciar próxima situação** abre o laboratório seguinte e limpa o estado da tentativa. Se o salvamento falhar, a finalização não é liberada.
+## 2.1 — Finalização de missões
+- Painel de resultado após avaliação.
+- Finalização condicionada a critérios completos e salvamento confirmado.
+- Próxima situação e repetição da missão, com reset de estado.
 
-## Banco de missões 2.2
+## 2.2 — Banco de missões L2
 - Dois cenários novos com VLANs 30/40 e 50/60, critérios próprios e nomes obrigatórios.
 - Progressão do botão Próxima situação percorre agora oito laboratórios.
