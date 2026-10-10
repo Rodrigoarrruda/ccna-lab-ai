@@ -1,5 +1,6 @@
 import {ccnaBlueprintV11} from './blueprint.ts';
 import {studyUnits} from './study-content.ts';
+import {studyQuestionVariants} from './study-question-variants.ts';
 import type {ExamQuestion} from './exam-types.ts';
 
 export type {ExamQuestion} from './exam-types.ts';
@@ -13,7 +14,10 @@ export type ExamRecord={
 export type ExamProgress=Record<string,ExamRecord>;
 
 export const examBlueprint=ccnaBlueprintV11;
-export const examQuestions:ExamQuestion[]=studyUnits.map(unit=>unit.question);
+export const examQuestions:ExamQuestion[]=[
+  ...studyUnits.map(unit=>unit.question),
+  ...studyQuestionVariants
+];
 
 export function getExamQuestion(index:number):ExamQuestion{
   return examQuestions[Math.max(0,index)%examQuestions.length];
@@ -21,6 +25,12 @@ export function getExamQuestion(index:number):ExamQuestion{
 
 export function isCorrect(question:ExamQuestion,answer:string):boolean{
   return question.answer===answer;
+}
+
+function isMastered(record?:ExamRecord):boolean{
+  if(!record)return false;
+  const total=record.correct+record.incorrect;
+  return total>=1&&record.correct>record.incorrect&&record.correct/total>=0.8;
 }
 
 export function selectNextQuestion(
@@ -42,9 +52,13 @@ export function selectNextQuestion(
 }
 
 export function countMastered(questions:ExamQuestion[],progress:ExamProgress):number{
-  return questions.filter(question=>{
-    const record=progress[question.id];
-    const total=(record?.correct??0)+(record?.incorrect??0);
-    return Boolean(record&&total>=1&&record.correct>record.incorrect&&record.correct/total>=0.8);
-  }).length;
+  return new Set(
+    questions
+      .filter(question=>isMastered(progress[question.id]))
+      .map(question=>question.objectiveId)
+  ).size;
+}
+
+export function isQuestionBankMastered(questions:ExamQuestion[],progress:ExamProgress):boolean{
+  return questions.length>0&&questions.every(question=>isMastered(progress[question.id]));
 }

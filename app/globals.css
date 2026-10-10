@@ -85,3 +85,5 @@ main{max-width:1680px}header{padding-bottom:4px}h1{font-weight:760}
 .exam-score em{display:block;text-transform:none;letter-spacing:0;color:#167b78;font-style:normal;font-size:.68rem;margin-top:4px}
 @media(max-width:850px){.domain-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.study-hero{padding:20px;flex-direction:column}.domain-grid{grid-template-columns:1fr}.study-package-heading{align-items:flex-start;flex-direction:column}.studylist label{padding:14px}}
+
+.exam-finished{display:grid;gap:22px;padding:28px;border:1px solid #b9ddd7;border-radius:22px;background:linear-gradient(135deg,#effaf7 0%,#f8fbff 100%)}.exam-finished h3{margin:8px 0;color:#102b46;font-size:1.45rem}.exam-finished p{max-width:760px;color:#526579;line-height:1.65;margin:0}.exam-finished .completion-actions{margin-top:0}
