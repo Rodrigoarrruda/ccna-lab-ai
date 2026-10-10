@@ -9,7 +9,7 @@ import {countMastered,examQuestions,getExamQuestion,isCorrect,isQuestionBankMast
 assert.equal(ccnaBlueprintV11.id,'ccna-200-301-v1.1');
 assert.equal(ccnaBlueprintV11.domains.length,6);
 assert.deepEqual(ccnaBlueprintV11.domains.map(domain=>domain.contentStatus),['available','available','available','available','available','available']);
-assert.equal(examQuestions.length,81);
+assert.equal(examQuestions.length,108);
 assert.equal(studyUnits.length,27);
 assert.equal(Object.keys(studyLessons).length,studyUnits.length);
 assert.ok(studyUnits.every(unit=>{const lesson=studyLessons[unit.objectiveId];return lesson&&lesson.overview&&lesson.whyItMatters&&lesson.concepts.length>=3&&lesson.commands.length>=2&&lesson.scenario&&lesson.checkOptions.length===4&&lesson.checkOptions.includes(lesson.checkAnswer);}));
@@ -20,6 +20,7 @@ assert.ok(advancedObjectives.every(objectiveId=>{const lesson=extendedStudyLesso
 assert.equal(getExamQuestion(81).id,examQuestions[0].id);
 assert.equal(examQuestions[27].objectiveId,examQuestions[0].objectiveId);
 assert.equal(examQuestions[54].objectiveId,examQuestions[0].objectiveId);
+assert.equal(examQuestions[81].objectiveId,examQuestions[0].objectiveId);
 assert.ok(examQuestions.every(question=>question.objectiveId&&question.domainId&&question.domain&&question.topic&&question.explanation));
 assert.ok(studyUnits.every(unit=>unit.summary&&unit.keyPoints.length>=2&&unit.commonMistake&&unit.question.objectiveId===unit.objectiveId));
 assert.ok(examQuestions.every(question=>['1.0','2.0','3.0'].includes(question.domainId)));
@@ -36,6 +37,7 @@ assert.equal(selectNextQuestion(examQuestions,initialCycle,examQuestions[53].id)
 const answerPositions=examQuestions.map(question=>question.options.indexOf(question.answer));
 assert.ok(answerPositions.every(position=>position>=0));
 assert.equal(new Set(answerPositions).size,4);
+assert.ok(answerPositions.filter(position=>position===0).length<examQuestions.length/2);
 assert.ok(answerPositions.filter(position=>position===0).length<examQuestions.length/2);
 assert.equal(countMastered(examQuestions,{[examQuestions[0].id]:{correct:4,incorrect:0,lastAnswered:1}}),1);
 assert.equal(countMastered(examQuestions,{[examQuestions[1].id]:{correct:1,incorrect:1,lastAnswered:1}}),0);
