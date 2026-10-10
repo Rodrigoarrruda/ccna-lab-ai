@@ -42,13 +42,13 @@ export const ccnaBlueprintV11: Blueprint = {
       {id:'3.4',title:'OSPFv2 de área única',items:['Adjacências','Point-to-point','Broadcast','DR e BDR','Router ID']},
       {id:'3.5',title:'Protocolos de redundância de primeiro salto',items:['Gateway virtual','Alta disponibilidade','Default gateway redundante']}
     ]},
-    {id:'4.0',title:'IP Services',weight:10,contentStatus:'planned',objectives:[
+    {id:'4.0',title:'IP Services',weight:10,contentStatus:'available',objectives:[
       {id:'4.1',title:'NAT inside source',items:['NAT estático','Pools']},{id:'4.2',title:'NTP',items:['Cliente','Servidor']},{id:'4.3',title:'DHCP e DNS',items:['Função na rede']},{id:'4.4',title:'SNMP',items:['Operações de rede']},{id:'4.5',title:'Syslog',items:['Facilities','Severidades']},{id:'4.6',title:'DHCP client e relay',items:['Configuração','Verificação']},{id:'4.7',title:'QoS PHB',items:['Classificação','Marcação','Filas','Congestionamento','Policing','Shaping']},{id:'4.8',title:'Acesso remoto SSH',items:['Configuração','Verificação']},{id:'4.9',title:'TFTP e FTP',items:['Capacidades','Funções']}
     ]},
-    {id:'5.0',title:'Security Fundamentals',weight:15,contentStatus:'planned',objectives:[
+    {id:'5.0',title:'Security Fundamentals',weight:15,contentStatus:'available',objectives:[
       {id:'5.1',title:'Conceitos de segurança',items:['Ameaças','Vulnerabilidades','Exploits','Mitigação']},{id:'5.2',title:'Elementos de programa de segurança',items:['Conscientização','Treinamento','Acesso físico']},{id:'5.3',title:'Controle de acesso local',items:['Senhas','Verificação']},{id:'5.4',title:'Política de senhas',items:['Complexidade','MFA','Certificados','Biometria']},{id:'5.5',title:'IPsec VPN',items:['Acesso remoto','Site-to-site']},{id:'5.6',title:'ACLs',items:['Configuração','Verificação']},{id:'5.7',title:'Segurança Layer 2',items:['DHCP snooping','DAI','Port security']},{id:'5.8',title:'AAA',items:['Authentication','Authorization','Accounting']},{id:'5.9',title:'Segurança sem fio',items:['WPA','WPA2','WPA3']},{id:'5.10',title:'WLAN com WPA2 PSK',items:['Configuração','Verificação']}
     ]},
-    {id:'6.0',title:'Automation and Programmability',weight:10,contentStatus:'planned',objectives:[
+    {id:'6.0',title:'Automation and Programmability',weight:10,contentStatus:'available',objectives:[
       {id:'6.1',title:'Impacto da automação',items:['Gerenciamento de rede']},{id:'6.2',title:'Redes tradicionais e controller-based',items:['Comparação']},{id:'6.3',title:'Arquitetura SDN',items:['Overlay','Underlay','Fabric','Control plane','Data plane','APIs northbound e southbound']},{id:'6.4',title:'IA e machine learning',items:['IA generativa','IA preditiva','Operações de rede']},{id:'6.5',title:'APIs REST',items:['Autenticação','CRUD','Verbos HTTP','Encoding']},{id:'6.6',title:'Gerenciamento de configuração',items:['Ansible','Terraform']},{id:'6.7',title:'JSON',items:['Componentes','Estrutura']}
     ]}
   ]
