@@ -1,4 +1,4 @@
-import type {ExamQuestion,StudyUnit} from './exam-types.ts';
+import type {ExamQuestion,StudyUnit} from './exam-types';
 
 type Draft = Omit<StudyUnit,'question'> & {
   domain:string;
