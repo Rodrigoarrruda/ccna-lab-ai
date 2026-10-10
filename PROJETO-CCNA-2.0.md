@@ -28,3 +28,22 @@ Transformar cada laboratório em uma tarefa de troubleshooting/configuração ba
 - A prova CCNA 200-301 inclui conteúdos além de VLAN/trunk: roteamento, serviços IP, segurança, automação e fundamentos. Esta entrega não cobre a matriz completa.
 - Não foi implementado um parser IOS genérico: os atalhos incluídos são explicitamente suportados.
 - A validação do build de produção depende de dependências instaladas e ambiente compatível.
+
+
+## Reposicionamento: CCNA Exam Coach
+
+A interface passa a priorizar preparação para a certificação, sem tentar substituir o Packet Tracer.
+
+- Banco inicial de questões autorais por domínio, assunto e dificuldade.
+- Correção determinística da alternativa escolhida e explicação pedagógica.
+- Sessão separada da avaliação dos laboratórios: questões não alteram a nota do CLI.
+- Laboratório recomendado quando a questão exigir prática de configuração.
+- Não reproduzir questões confidenciais, vazadas ou atribuídas à prova sem fonte pública verificável.
+
+### Critérios de aceite
+
+1. O aluno consegue iniciar uma sessão de questões diretamente pela Home.
+2. Cada questão informa domínio, assunto e dificuldade.
+3. A resposta correta e a explicação aparecem somente após a submissão.
+4. Questões autorais não alteram histórico ou pontuação dos laboratórios.
+5. A navegação continua responsiva e o build Webpack permanece preservado.
