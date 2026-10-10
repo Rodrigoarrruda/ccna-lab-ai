@@ -1,0 +1,33 @@
+name: Repair dependency lockfile (bootstrap)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/repair-lockfile.yml'
+permissions:
+  contents: write
+jobs:
+  synchronize:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'bootstrap/importacao-codigo'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate lockfile without installing dependencies
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Commit repaired lockfile to import branch
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "fix: sync dependency lockfile with Next.js 16.3.8"
+            git push origin HEAD:"${{ github.head_ref }}"
+          fi
