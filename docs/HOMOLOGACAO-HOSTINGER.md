@@ -43,9 +43,9 @@ Interpretação operacional dos códigos mais úteis:
 | Código | Verificação no hPanel |
 |---|---|
 | `CONFIG_MISSING` | Alguma das variáveis obrigatórias está vazia ou ausente. |
-| `ENOTFOUND`, `ECONNREFUSED`, `ETIMEDOUT` | `MYSQL_HOST), `MYSQL_PORT` ou acesso de rede incorreto. |
-| `ER_ACCESS_DENIED_ERROR` | `MYSQL_USER), `MYSQL_PASSWORD) ou permissões do usuário. |
-| `ER_BAD_DB_ERROR` | `MYSQL_DATABASE) não existe nesse servidor ou o usuário não tem acesso a ela. |
+| `ENOTFOUND`, `ECONNREFUSED`, `ETIMEDOUT` | `MYSQL_HOST`, `MYSQL_PORT` ou acesso de rede incorreto. |
+| `ER_ACCESS_DENIED_ERROR` | `MYSQL_USER`, `MYSQL_PASSWORD` ou permissões do usuário. |
+| `ER_BAD_DB_ERROR` | `MYSQL_DATABASE` não existe nesse servidor ou o usuário não tem acesso a ela. |
 | `ER_TABLEACCESS_DENIED_ERROR` | O usuário conecta, mas não tem permissão para criar/ler/gravar as tabelas do aplicativo. |
 
 ## Orientação específica para olive-fox
