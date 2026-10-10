@@ -1,8 +1,8 @@
-import {ccnaBlueprintV11} from './blueprint';
-import {studyUnits} from './study-content';
-import type {ExamQuestion} from './exam-types';
+import {ccnaBlueprintV11} from './blueprint.ts';
+import {studyUnits} from './study-content.ts';
+import type {ExamQuestion} from './exam-types.ts';
 
-export type {ExamQuestion} from './exam-types';
+export type {ExamQuestion} from './exam-types.ts';
 
 export type ExamRecord={
   correct:number;
