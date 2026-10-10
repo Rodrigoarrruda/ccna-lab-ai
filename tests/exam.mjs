@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {ccnaBlueprintV11} from '../lib/blueprint.ts';
 import {studyUnits} from '../lib/study-content.ts';
+import {studyLessons} from '../lib/study-lessons.ts';
 import {countMastered,examQuestions,getExamQuestion,isCorrect,isQuestionBankMastered,selectNextQuestion} from '../lib/exam.ts';
 
 assert.equal(ccnaBlueprintV11.id,'ccna-200-301-v1.1');
@@ -8,6 +9,8 @@ assert.equal(ccnaBlueprintV11.domains.length,6);
 assert.deepEqual(ccnaBlueprintV11.domains.slice(0,3).map(domain=>domain.contentStatus),['available','available','available']);
 assert.equal(examQuestions.length,81);
 assert.equal(studyUnits.length,27);
+assert.equal(Object.keys(studyLessons).length,studyUnits.length);
+assert.ok(studyUnits.every(unit=>{const lesson=studyLessons[unit.objectiveId];return lesson&&lesson.overview&&lesson.whyItMatters&&lesson.concepts.length>=3&&lesson.commands.length>=2&&lesson.scenario&&lesson.checkOptions.length===4&&lesson.checkOptions.includes(lesson.checkAnswer);}));
 assert.equal(getExamQuestion(81).id,examQuestions[0].id);
 assert.equal(examQuestions[27].objectiveId,examQuestions[0].objectiveId);
 assert.equal(examQuestions[54].objectiveId,examQuestions[0].objectiveId);
@@ -34,4 +37,4 @@ assert.equal(isQuestionBankMastered(examQuestions,initialCycle),false);
 const fullMastery=Object.fromEntries(examQuestions.map(question=>[question.id,{correct:1,incorrect:0,lastAnswered:2}]));
 assert.equal(isQuestionBankMastered(examQuestions,history),false);
 assert.equal(isQuestionBankMastered(examQuestions,fullMastery),true);
-console.log('PASS: blueprint v1.1, três ciclos autorais, alternativas distribuídas e seleção adaptativa determinística validados.');
+console.log('PASS: blueprint v1.1, três ciclos autorais, alternativas distribuídas, módulos interativos e seleção adaptativa determinística validados.');
