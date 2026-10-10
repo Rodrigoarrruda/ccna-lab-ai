@@ -47,3 +47,19 @@ A interface passa a priorizar preparação para a certificação, sem tentar sub
 3. A resposta correta e a explicação aparecem somente após a submissão.
 4. Questões autorais não alteram histórico ou pontuação dos laboratórios.
 5. A navegação continua responsiva e o build Webpack permanece preservado.
+
+## Blueprint e pacote de estudo — v1.1
+
+O conteúdo de preparação passou a usar `lib/blueprint.ts` como fonte versionada do CCNA 200-301 v1.1. Os seis domínios e seus pesos ficam registrados, enquanto o pacote inicial libera conteúdo estudável para:
+
+- **1.0 Network Fundamentals — 20%:** objetivos 1.1 a 1.13.
+- **2.0 Network Access — 20%:** objetivos 2.1 a 2.9.
+- **3.0 IP Connectivity — 25%:** objetivos 3.1 a 3.5.
+
+Cada unidade em `lib/study-content.ts` contém resumo, pontos-chave, erro comum e uma questão autoral determinística vinculada ao objetivo. Os domínios 4.0, 5.0 e 6.0 permanecem versionados como planejados, sem fingir cobertura que ainda não foi produzida.
+
+A sessão de questões deixa de percorrer um banco fixo de seis itens. O progresso local registra acertos, erros e última resposta por questão; a seleção prioriza itens inéditos, depois itens errados, depois baixa precisão e, por fim, itens já dominados. Isso mantém o avaliador determinístico e não depende da disponibilidade do MySQL.
+
+### Limites pedagógicos
+
+O blueprint organiza o estudo, mas não autoriza reproduzir questões confidenciais ou vazadas da certificação. O pacote é autoral e deve crescer por objetivo, com revisão técnica e questões de cenários antes de ser tratado como preparação completa para a prova.

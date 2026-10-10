@@ -1,3 +1,12 @@
+
+## Blueprint e seleção adaptativa — 2026-10-10
+
+- Versiona o blueprint CCNA 200-301 v1.1 com seis domínios e pesos oficiais.
+- Entrega o primeiro pacote autoral de estudo para Network Fundamentals, Network Access e IP Connectivity.
+- Vincula cada unidade a objetivo, resumo, pontos-chave, erro comum e questão determinística.
+- Substitui o fluxo fixo de seis questões por seleção adaptativa persistida localmente.
+- Mantém os domínios restantes explícitos como planejados para evitar falsa sensação de cobertura.
+
 ## Próxima versão
 
 - Reposiciona a Home como preparação para o CCNA.
