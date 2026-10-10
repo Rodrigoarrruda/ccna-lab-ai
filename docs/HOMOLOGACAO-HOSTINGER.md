@@ -48,6 +48,10 @@ Interpretação operacional dos códigos mais úteis:
 | `ER_BAD_DB_ERROR` | `MYSQL_DATABASE` não existe nesse servidor ou o usuário não tem acesso a ela. |
 | `ER_TABLEACCESS_DENIED_ERROR` | O usuário conecta, mas não tem permissão para criar/ler/gravar as tabelas do aplicativo. |
 
+## Evidência recebida do phpMyAdmin
+- A captura mostra o host `auth-db882.hstgr.io`, a porta `3306` e o banco `u471466248_ccna_teste`.
+- O banco está sem tabelas; isso é compatível com a inicialização automática de `attempts` e `study` no primeiro acesso da aplicação.
+- `127.0.0.1:3306` é a perspectiva local do phpMyAdmin. Para o aplicativo, use `auth-db882.hstgr.io` salvo confirmação explícita do hPanel de que o Node roda no mesmo host.
 ## Orientação específica para olive-fox
 - `MYSQL_HOST` deve ser o hostname MySQL exibido no hPanel para o banco de homologação. Não use `olive-fox-987195.hostingersite.com`, o domínio público do app, como host do banco. Não substitua o valor por `localhost` sem confirmação explícita do hPanel.
 - `MYSQL_DATABASE` deve ser o nome exato do banco MySQL de homologação criado e associado ao usuário configurado. Se o painel mostrar `ccna_teste`, use `ccna_teste`; se mostrar `ccna_lab`, use `ccna_lab`. Não escolha pelo nome da URL.
