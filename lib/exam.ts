@@ -2,6 +2,7 @@ import {ccnaBlueprintV11} from './blueprint.ts';
 import {studyUnits} from './study-content.ts';
 import {studyQuestionVariants} from './study-question-variants.ts';
 import {studyQuestionCycle3} from './study-question-cycle-3.ts';
+import {studyQuestionCycle4} from './study-question-cycle-4.ts';
 import type {ExamQuestion} from './exam-types.ts';
 
 export type {ExamQuestion} from './exam-types.ts';
@@ -18,7 +19,8 @@ export const examBlueprint=ccnaBlueprintV11;
 export const examQuestions:ExamQuestion[]=[
   ...studyUnits.map(unit=>unit.question),
   ...studyQuestionVariants,
-  ...studyQuestionCycle3
+  ...studyQuestionCycle3,
+  ...studyQuestionCycle4
 ];
 
 export function getExamQuestion(index:number):ExamQuestion{
