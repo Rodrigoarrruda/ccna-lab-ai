@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {initial,run,expandCisco} from '../lib/labs.ts';
+assert.equal(expandCisco('sh vlan br'),'show vlan brief');
+assert.equal(expandCisco('do sh run'),'do show running-config');
+let s=initial('vlan');
+for(const cmd of ['en','conf t','vlan 10','name VENDAS','exit','int gi0/1','sw mo acc','sw acc vlan 10','end','sh vlan br'])s=run(s,cmd).state;
+assert.equal(s.devices.SW1.vlans[10],'VENDAS');
+assert.equal(s.devices.SW1.ports['gi0/1'].vlan,10);
+assert.equal(s.mode,'exec');
+console.log('Atalhos Cisco: OK');
