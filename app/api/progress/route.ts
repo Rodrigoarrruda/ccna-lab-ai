@@ -1,3 +1,6 @@
+export const runtime='nodejs';
+export const dynamic='force-dynamic';
+
 import {db} from '@/lib/db';
 import {logMysqlFailure} from '@/lib/db-errors';
 import {grade,labs,initial,run} from '@/lib/labs';
