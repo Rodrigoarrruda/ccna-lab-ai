@@ -1,9 +1,17 @@
 import 'server-only';
 import mysql, {type Pool, type RowDataPacket} from 'mysql2/promise';
+
 let pool:Pool|undefined;
 let ready:Promise<void>|undefined;
+
+function missingConfigError() {
+  const error = new Error();
+  Object.assign(error, {code:'CONFIG_MISSING'});
+  return error;
+}
+
 function connection(){
- if(!process.env.MYSQL_HOST||!process.env.MYSQL_DATABASE||!process.env.MYSQL_USER||!process.env.MYSQL_PASSWORD)throw new Error('Configure o banco no painel.');
+ if(!process.env.MYSQL_HOST||!process.env.MYSQL_DATABASE||!process.env.MYSQL_USER||!process.env.MYSQL_PASSWORD)throw missingConfigError();
  if(!pool)pool=mysql.createPool({host:process.env.MYSQL_HOST,port:Number(process.env.MYSQL_PORT||3306),database:process.env.MYSQL_DATABASE,user:process.env.MYSQL_USER,password:process.env.MYSQL_PASSWORD,connectionLimit:3,connectTimeout:10000});
  return pool;
 }
