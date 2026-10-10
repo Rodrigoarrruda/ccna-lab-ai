@@ -71,3 +71,11 @@ O motor não encaminha quadros Ethernet reais nem executa ARP, STP ou negociaç�
 
 ## Banco de missões 2.2
 Execute `node --experimental-strip-types tests/mission-bank.mjs`. Confirme que as soluções de referência aprovam ambos os switches e que configurações parciais não são aprovadas.
+
+## 6. UX da missão e tutor contextual (manual)
+
+- Abrir Laboratórios e confirmar três zonas visíveis no desktop: missão/topologia, console e Tutor contextual.
+- Confirmar que o tutor permanece visível sem clicar em um botão escondido no fim da página.
+- Alternar Dica inicial, Dica detalhada e Solução; confirmar que o nível selecionado aparece ativo.
+- Enviar uma pergunta e confirmar que a resposta é identificada como local ou generativa sem alterar a nota.
+- Reduzir a janela para celular; confirmar que as zonas passam a uma coluna, o console continua utilizável e o tutor permanece acessível.

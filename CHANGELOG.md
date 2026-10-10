@@ -1,5 +1,10 @@
 # Histórico de versões — CCNA Lab AI
 
+## UX da missão e tutor contextual — 2026-10-10
+- Tutor contextual visível junto ao laboratório, com níveis de dica, contexto do prompt e correções pendentes.
+- Workspace reorganizado em contexto, console e orientação, com hierarquia visual menos rígida e responsividade preservada.
+- Direção inspirada em padrões observados no Packet Tracer, GNS3 e plataformas de trilhas práticas.
+
 ## Diagnóstico MySQL no staging — 2026-10-10
 - Rotas `/api/progress` e `/api/study` passaram a separar validação de entrada de falhas de persistência.
 - Falhas de banco registram apenas rota, etapa, request ID e códigos técnicos seguros, sem credenciais, SQL ou mensagens de erro.
