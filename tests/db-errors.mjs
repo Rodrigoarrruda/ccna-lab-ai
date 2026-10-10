@@ -5,7 +5,10 @@ assert.deepEqual(
   mysqlFailureDetails({code:'ER_BAD_DB_ERROR',errno:1049,sqlState:'42000',message:'credentials=not-logged'}),
   {code:'ER_BAD_DB_ERROR',errno:1049,sqlState:'42000'},
 );
-assert.deepEqual(mysqlFailureDetails({code:'unsafe code',errno:-1,sqlState:'bad'}),{code:'UNKNOWN'});
+const unsafe=mysqlFailureDetails({code:'unsafe code',errno:-1,sqlState:'bad'});
+assert.equal(unsafe.code,'UNKNOWN');
+assert.equal(unsafe.errno,undefined);
+assert.equal(unsafe.sqlState,undefined);
 
 const originalError=console.error;
 let line='';
