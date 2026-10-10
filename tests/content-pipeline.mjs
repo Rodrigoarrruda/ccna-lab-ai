@@ -8,7 +8,7 @@ const base={
   generatedAt:'2026-10-10T12:00:00.000Z'
 };
 
-function item(index:number,answerIndex:number,objectiveId:string,domainId:string,domain:string){
+function item(index,answerIndex,objectiveId,domainId,domain){
   const options=['A','B','C','D'];
   return {
     id:'draft-'+index,
@@ -16,7 +16,7 @@ function item(index:number,answerIndex:number,objectiveId:string,domainId:string
     domainId,
     domain,
     topic:'Diagnóstico',
-    difficulty:'Intermediário' as const,
+    difficulty:'Intermediário',
     prompt:'Pergunta inédita sobre '+objectiveId+' número '+index,
     options,
     answer:options[answerIndex],
@@ -40,8 +40,8 @@ const valid={
 const validResult=validateContentBatch(valid);
 assert.equal(validResult.ok,true,validResult.errors.join('; '));
 
-const invalid=structuredClone(valid) as Record<string,unknown>;
-const invalidItems=invalid.items as Record<string,unknown>[];
+const invalid=structuredClone(valid);
+const invalidItems=invalid.items;
 invalidItems[1]={...invalidItems[1],id:'draft-1',objectiveId:'9.9',domainId:'9.0',domain:'Outro',options:['A','A','A','A'],answer:'Z',password:'não permitido'};
 const invalidResult=validateContentBatch(invalid,{existingIds:['draft-3']});
 assert.equal(invalidResult.ok,false);
