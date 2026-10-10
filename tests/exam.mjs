@@ -26,5 +26,7 @@ assert.equal(selectNextQuestion(examQuestions,initialCycle,examQuestions[26].id)
 assert.equal(countMastered(examQuestions,{[examQuestions[0].id]:{correct:4,incorrect:0,lastAnswered:1}}),1);
 assert.equal(countMastered(examQuestions,{[examQuestions[1].id]:{correct:1,incorrect:1,lastAnswered:1}}),0);
 assert.equal(isQuestionBankMastered(examQuestions,initialCycle),false);
-assert.equal(isQuestionBankMastered(examQuestions,history),true);
+const fullMastery=Object.fromEntries(examQuestions.map(question=>[question.id,{correct:1,incorrect:0,lastAnswered:2}]));
+assert.equal(isQuestionBankMastered(examQuestions,history),false);
+assert.equal(isQuestionBankMastered(examQuestions,fullMastery),true);
 console.log('PASS: blueprint v1.1, dois ciclos autorais e seleção adaptativa determinística validados.');
