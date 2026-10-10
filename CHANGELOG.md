@@ -1,3 +1,9 @@
+## Próxima versão
+
+- Reposiciona a Home como preparação para o CCNA.
+- Adiciona sessão de questões autorais com domínio, dificuldade, correção e explicação.
+- Mantém os laboratórios como prática complementar e preserva a avaliação determinística.
+
 # Histórico de versões — CCNA Lab AI
 
 ## UX da missão e tutor contextual — 2026-10-10
