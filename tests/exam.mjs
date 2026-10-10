@@ -8,7 +8,7 @@ assert.equal(ccnaBlueprintV11.domains.length,6);
 assert.deepEqual(ccnaBlueprintV11.domains.slice(0,3).map(domain=>domain.contentStatus),['available','available','available']);
 assert.equal(examQuestions.length,27);
 assert.equal(studyUnits.length,27);
-assert.equal(getExamQuestion(26).id,examQuestions[0].id);
+assert.equal(getExamQuestion(27).id,examQuestions[0].id);
 assert.ok(examQuestions.every(question=>question.objectiveId&&question.domainId&&question.domain&&question.topic&&question.explanation));
 assert.ok(studyUnits.every(unit=>unit.summary&&unit.keyPoints.length>=2&&unit.commonMistake&&unit.question.objectiveId===unit.objectiveId));
 assert.ok(examQuestions.every(question=>['1.0','2.0','3.0'].includes(question.domainId)));
