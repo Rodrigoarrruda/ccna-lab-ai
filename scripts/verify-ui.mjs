@@ -129,6 +129,32 @@ try{
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('[data-cable]').count(),2);
+    await page.evaluate(()=>localStorage.removeItem('ccna-free-network-v1'));
+    await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ Roteador',exact:true}).click();
+    for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ PC',exact:true}).click();
+    await cable('PC3','eth0','R1','gi0/0');await cable('R1','gi0/1','R2','gi0/1');await cable('R2','gi0/0','PC4','eth0');
+    for(const [pc,address,gateway] of [['PC3','192.168.10.11','192.168.10.1'],['PC4','192.168.20.12','192.168.20.1']]){
+      await page.locator(`[data-node="${pc}"]`).click();await page.getByLabel('Endereço IPv4',{exact:true}).fill(address);await page.getByLabel('Gateway padrão',{exact:true}).fill(gateway);await page.getByRole('button',{name:'Aplicar IPv4',exact:true}).click();
+    }
+    const routerCLI=async(id,commands)=>{await page.locator(`[data-node="${id}"]`).click();if(commands[0]!=='enable'&&(await page.locator('.free-device .commandline label').innerText()).endsWith('>')){await page.locator('#free-cli').fill('enable');await page.locator('#free-cli').press('Enter');}for(const command of commands){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}};
+    for(const [id,lan,wan] of [['R1','192.168.10.1','10.0.0.1'],['R2','192.168.20.1','10.0.0.2']])await routerCLI(id,['enable','configure terminal','interface gi0/0',`ip address ${lan} 255.255.255.0`,'no shutdown','interface gi0/1',`ip address ${wan} 255.255.255.0`,'no shutdown','end']);
+    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
+    assert.match(await page.locator('.free-coach').innerText(),/R1: sem rota/);
+    await routerCLI('R1',['configure terminal','ip route 192.168.20.0 255.255.255.0 10.0.0.2','end']);
+    assert.match(await page.locator('.free-coach').innerText(),/retorno/);
+    await routerCLI('R2',['configure terminal','ip route 192.168.10.0 255.255.255.0 10.0.0.1','end','show ip route']);
+    assert.match(await page.locator('.free-coach').innerText(),/ida e volta válido/);
+    assert.match(await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText(),/S 192.168.10.0/);
+    assert.equal(await page.locator('[data-interface]').count(),8);
+    await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
+    await page.screenshot({path:`ui-artifacts/${name}-free-router.png`,fullPage:true});
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'router editor must fit viewport');
+    await routerCLI('R2',['configure terminal','interface gi0/1','shutdown','end']);assert.match(await page.locator('.free-coach').innerText(),/Investigue/);
+    await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();assert.match(await page.locator('.free-coach').innerText(),/ida e volta válido/);
+    await page.locator('[data-node="R1"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();assert.equal(await page.locator('[data-cable]').count(),1);
+    console.log(`PASS routers ${name}: interfaces, PC gateways, missing route/return route, static routes, shutdown, persisted configuration and removal`);
     console.log(`PASS free editor ${name}: add, pointer drag, cables, loop guard, CLI VLAN/trunk/shutdown, live coach, save/reopen and delete`);
     assert.deepEqual(errors,[],'uncaught browser errors');
     await context.close();console.log(`PASS UI ${name}: wrong/correct answer, bank switch, persistence, review and mission/CLI/save/finish/next with API fixtures`);
