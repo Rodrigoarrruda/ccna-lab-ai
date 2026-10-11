@@ -85,3 +85,8 @@ Testes em tests/free-network.mjs; aceitação mobile/desktop estendida em script
 
 
 Correção do editor livre: exclusão junto ao desenho, seleção por toque e cabos ligados a interfaces visíveis e identificadas. Equipamento B não permite selecionar o próprio equipamento A.
+
+
+### Roteador no laboratório livre
+Paleta com roteador de três interfaces Gi0/0–2, IPv4 /24, gateway nos PCs, rotas estáticas /24 e rota padrão. Configuração por CLI com modos Cisco, interfaces em shutdown inicialmente, show ip interface brief, show ip route e show running-config. Ping determinístico verifica VLANs/cabos, gateway, próximo salto e caminhos de ida/volta; tutor lê o mesmo estado. Persistência compatível com topologias L2 anteriores. Limites: 8 equipamentos, 32 rotas por roteador, próximo salto diretamente conectado, uma rota por prefixo, sem ECMP, IPv6, OSPF, NAT, DHCP, subinterfaces ou pacotes reais. A tabela identifica rotas estáticas configuradas; o teste de ping verifica a acessibilidade do próximo salto.
+Verificação: tests/free-routing.mjs e aceitação móvel/desktop em scripts/verify-ui.mjs; checklist docs/free-router-acceptance.md.
