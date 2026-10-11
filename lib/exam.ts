@@ -6,6 +6,8 @@ import {studyQuestionCycle4} from './study-question-cycle-4.ts';
 import {studyQuestionCycle5} from './study-question-cycle-5.ts';
 import type {ExamQuestion} from './exam-types.ts';
 
+export {advancedExamQuestions} from './exam-advanced.ts';
+
 export type {ExamQuestion} from './exam-types.ts';
 
 export type ExamRecord={
@@ -36,7 +38,7 @@ export function isCorrect(question:ExamQuestion,answer:string):boolean{
 function isMastered(record?:ExamRecord):boolean{
   if(!record)return false;
   const total=record.correct+record.incorrect;
-  return total>=1&&record.correct>record.incorrect&&record.correct/total>=0.8;
+  return total>=3&&record.correct>record.incorrect&&record.correct/total>=0.8;
 }
 
 export function selectNextQuestion(
@@ -49,7 +51,7 @@ export function selectNextQuestion(
       const record=progress[question.id];
       const total=(record?.correct??0)+(record?.incorrect??0);
       const accuracy=total?record!.correct/total:0;
-      const priority=!record?0:record.incorrect>0?1:accuracy<0.8?2:3;
+      const priority=!record?0:!isMastered(record)?1:2;
       return {index,priority,accuracy,lastAnswered:record?.lastAnswered??0};
     })
     .filter(item=>questions[item.index].id!==currentId);
@@ -58,11 +60,10 @@ export function selectNextQuestion(
 }
 
 export function countMastered(questions:ExamQuestion[],progress:ExamProgress):number{
-  return new Set(
-    questions
-      .filter(question=>isMastered(progress[question.id]))
-      .map(question=>question.objectiveId)
-  ).size;
+  const objectives=new Set(questions.map(question=>question.objectiveId));
+  return [...objectives].filter(objectiveId=>questions
+    .filter(question=>question.objectiveId===objectiveId)
+    .every(question=>isMastered(progress[question.id]))).length;
 }
 
 export function isQuestionBankMastered(questions:ExamQuestion[],progress:ExamProgress):boolean{
