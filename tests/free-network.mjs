@@ -30,3 +30,7 @@ assert.equal(validHost('192.168.10.254'),true);
 let full=emptyNetwork();for(let i=0;i<8;i++)full=addNode(full,'pc');assert.throws(()=>addNode(full,'pc'),/8 equipamentos/);
 assert.equal(localCoach(net,'PC3','PC4').title,'Conectividade confirmada');assert.match(localCoach(anotherSubnet,'PC3','PC4').next,/máscara/);
 console.log('PASS: free topology, ports, loop rejection, CLI-derived VLAN/trunk/shutdown ping, persistence and IPv4 boundaries.');
+
+let named=emptyNetwork();named=addNode(named,'switch');for(const command of ['enable','configure terminal','vlan 10'])named=executeSwitch(named,'SW1',command).network;
+assert.equal(executeSwitch(named,'SW1','name '+ 'A'.repeat(33)).output.startsWith('%'),true);
+named=executeSwitch(named,'SW1','name '+ 'A'.repeat(32)).network;assert.doesNotThrow(()=>restoreNetwork(JSON.stringify(named)));

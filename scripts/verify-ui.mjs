@@ -105,6 +105,7 @@ try{
       await page.locator(`[data-node="${device}"]`).click();
       for(const command of ['enable','configure terminal','vlan 10','exit','interface gi0/1','switchport mode access','switchport access vlan 10','interface gi0/24','switchport mode trunk','switchport trunk allowed vlan 10','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}
     }
+    assert(!((await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText()).includes('SW1>')),'selected SW2 terminal must not display SW1 history');
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await page.screenshot({path:`ui-artifacts/${name}-free-network.png`,fullPage:true});
