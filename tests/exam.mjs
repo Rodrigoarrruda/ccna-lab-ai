@@ -4,7 +4,7 @@ import {studyUnits} from '../lib/study-content.ts';
 import {studyLessons} from '../lib/study-lessons.ts';
 import {extendedStudyLessons} from '../lib/study-lessons-advanced.ts';
 import {packetTracerLabs} from '../lib/packet-tracer-labs.ts';
-import {countMastered,examQuestions,getExamQuestion,isCorrect,isQuestionBankMastered,selectNextQuestion} from '../lib/exam.ts';
+import {advancedExamQuestions,countMastered,examQuestions,getExamQuestion,isCorrect,isQuestionBankMastered,selectNextQuestion} from '../lib/exam.ts';
 
 assert.equal(ccnaBlueprintV11.id,'ccna-200-301-v1.1');
 assert.equal(ccnaBlueprintV11.domains.length,6);
@@ -41,10 +41,39 @@ const answerPositions=examQuestions.map(question=>question.options.indexOf(quest
 assert.ok(answerPositions.every(position=>position>=0));
 assert.equal(new Set(answerPositions).size,4);
 assert.ok(answerPositions.filter(position=>position===0).length<examQuestions.length/2);
-assert.equal(countMastered(examQuestions,{[examQuestions[0].id]:{correct:4,incorrect:0,lastAnswered:1}}),1);
+assert.equal(countMastered(examQuestions,{[examQuestions[0].id]:{correct:4,incorrect:0,lastAnswered:1}}),0);
 assert.equal(countMastered(examQuestions,{[examQuestions[1].id]:{correct:1,incorrect:1,lastAnswered:1}}),0);
 assert.equal(isQuestionBankMastered(examQuestions,initialCycle),false);
-const fullMastery=Object.fromEntries(examQuestions.map(question=>[question.id,{correct:1,incorrect:0,lastAnswered:2}]));
+const fullMastery=Object.fromEntries(examQuestions.map(question=>[question.id,{correct:3,incorrect:0,lastAnswered:2}]));
 assert.equal(isQuestionBankMastered(examQuestions,history),false);
 assert.equal(isQuestionBankMastered(examQuestions,fullMastery),true);
 console.log('PASS: blueprint v1.1, quatro ciclos autorais, alternativas distribuídas, módulos interativos dos domínios 1–6, roteiros Packet Tracer e seleção adaptativa determinística validados.');
+
+assert.equal(advancedExamQuestions.length,40);
+assert.deepEqual(ccnaBlueprintV11.domains.map(domain=>advancedExamQuestions.filter(q=>q.domainId===domain.id).length),[8,8,10,4,6,4]);
+assert.equal(new Set([...examQuestions,...advancedExamQuestions].map(q=>q.id)).size,174);
+assert.ok(advancedExamQuestions.every(q=>q.difficulty==='Avançado'&&q.options.length===4&&new Set(q.options).size===4&&q.options.includes(q.answer)&&q.explanation.length>100));
+assert.ok(advancedExamQuestions.every(q=>ccnaBlueprintV11.domains.find(d=>d.id===q.domainId).objectives.some(o=>o.id===q.objectiveId)));
+for(const q of advancedExamQuestions){assert.equal(isCorrect(q,q.answer),true);for(const wrong of q.options.filter(o=>o!==q.answer))assert.equal(isCorrect(q,wrong),false);}
+const advancedProgress=Object.fromEntries(advancedExamQuestions.map(q=>[q.id,{correct:3,incorrect:0,lastAnswered:1}]));
+assert.equal(isQuestionBankMastered(advancedExamQuestions,{}),false);
+assert.equal(isQuestionBankMastered(advancedExamQuestions,fullMastery),false); // foundation history never unlocks new bank
+assert.equal(isQuestionBankMastered(advancedExamQuestions,advancedProgress),true);
+const first=advancedExamQuestions[0];
+assert.equal(isQuestionBankMastered([first],{[first.id]:{correct:2,incorrect:0,lastAnswered:1}}),false);
+assert.equal(isQuestionBankMastered([first],{[first.id]:{correct:4,incorrect:1,lastAnswered:1}}),true); // 80% boundary
+assert.equal(isQuestionBankMastered([first],{[first.id]:{correct:3,incorrect:1,lastAnswered:1}}),false);
+assert.equal(isQuestionBankMastered([],{}),false);
+assert.equal(countMastered(advancedExamQuestions,{[first.id]:advancedProgress[first.id]}),0); // other VLSM item still unanswered
+assert.equal(selectNextQuestion(advancedExamQuestions,{},first.id),1);
+// Independently derive VLSM block sizes from the requested host counts.
+const blockFor=hosts=>2**Math.ceil(Math.log2(hosts+2));
+const offset=blockFor(100)+blockFor(50);
+const prefix=32-Math.log2(blockFor(20));
+assert.ok(first.answer.includes(`192.0.2.${offset}/${prefix}`));
+assert.ok(first.answer.includes(`.${offset+1}–.${offset+blockFor(20)-2}`));
+const lanCount=2**(64-56);
+assert.ok(advancedExamQuestions[4].answer.includes(lanCount.toString()));
+assert.ok(advancedExamQuestions[4].answer.includes((0x1200+lanCount-1).toString(16)));
+assert.match(advancedExamQuestions[16].answer,/192\.0\.2\.6/);
+console.log('PASS: 40 advanced original scenarios, weights, grading, separate history and consistency boundaries.');

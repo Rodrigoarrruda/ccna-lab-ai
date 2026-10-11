@@ -111,3 +111,12 @@ main{max-width:1680px}header{padding-bottom:4px}h1{font-weight:760}
 .study-steps small{font-size:11px;line-height:1.4;color:#6a7f90;letter-spacing:0}
 @media(max-width:700px){.study-guide{grid-template-columns:1fr;padding:18px}.study-steps{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.study-steps{grid-template-columns:1fr}.study-guide-action{width:100%}}
+
+/* Long exam evidence stays readable on narrow screens. */
+.exam-question h3{white-space:pre-wrap;overflow-wrap:anywhere;font-size:clamp(1.05rem,2.4vw,1.4rem);line-height:1.6}
+.exam-option{white-space:pre-wrap;overflow-wrap:anywhere}
+.exam-mode{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:24px 0}
+.exam-mode select{max-width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:#203744;font:inherit}
+.exam-coach>*,.exam-intro>div,.exam-question,.exam-options{min-width:0}
+.exam-mode select{min-width:0;width:min(100%,360px)}
+.exam-intro small,.exam-score span{overflow-wrap:anywhere}
