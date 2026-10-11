@@ -82,3 +82,6 @@ Nova aba para adicionar e arrastar PCs/switches, criar/excluir cabos por portas,
 Rejeita porta ocupada, self-link, PC-PC e loops. Sem STP, roteamento, EtherChannel ou pacotes reais; não é emulação completa do Packet Tracer. A persistência valida versão, equipamentos, IPs, portas, enlaces e configurações antes de reabrir.
 
 Testes em tests/free-network.mjs; aceitação mobile/desktop estendida em scripts/verify-ui.mjs. Resultado da CI registrado no PR; manter draft até todos os checks e inspeção visual.
+
+
+Correção do editor livre: exclusão junto ao desenho, seleção por toque e cabos ligados a interfaces visíveis e identificadas. Equipamento B não permite selecionar o próprio equipamento A.

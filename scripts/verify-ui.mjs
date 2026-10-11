@@ -24,7 +24,7 @@ try{
   await mkdir('ui-artifacts',{recursive:true});
   browser=await chromium.launch({headless:true});
   for(const [name,viewport] of [['mobile',{width:390,height:844}],['desktop',{width:1365,height:900}]]){
-    const context=await browser.newContext({viewport,httpCredentials:{username:'rodrigo',password}});
+    const context=await browser.newContext({viewport,hasTouch:name==='mobile',httpCredentials:{username:'rodrigo',password}});
     const page=await context.newPage();const errors=[];page.on('pageerror',error=>errors.push(error.message));
     // Deterministic API fixtures test view behavior; they do not certify production DB access.
     const history=[];
@@ -98,6 +98,14 @@ try{
     assert.notEqual(await firstNode.getAttribute('style'),before,'node drag must update coordinates');
     const cable=async(a,ap,b,bp)=>{await page.getByLabel('Equipamento A',{exact:true}).selectOption(a);await page.getByLabel('Porta A',{exact:true}).selectOption(ap);await page.getByLabel('Equipamento B',{exact:true}).selectOption(b);await page.getByLabel('Porta B',{exact:true}).selectOption(bp);await page.getByRole('button',{name:'Conectar cabo',exact:true}).click();};
     await cable('PC3','eth0','SW1','gi0/1');await cable('PC4','eth0','SW2','gi0/1');await cable('SW1','gi0/24','SW2','gi0/24');
+    assert.equal(await page.locator('[data-cable]').count(),3);
+    assert.equal(await page.locator('[data-interface]').count(),10);
+    await page.getByLabel('Equipamento A',{exact:true}).selectOption('SW1');
+    assert(!(await page.getByLabel('Equipamento B',{exact:true}).locator('option').evaluateAll(items=>items.map(i=>i.value))).includes('SW1'));
+    const anchors=await page.locator('[data-cable]').evaluateAll(paths=>paths.map(p=>[p.dataset.start,p.dataset.end]));
+    assert(anchors.every(([a,b])=>a!==b),'cables must have distinct port endpoints');
+    const portMatches=await page.locator('[data-cable]').evaluateAll(paths=>paths.every(path=>[path.dataset.start,path.dataset.end].every(pair=>{const [x,y]=pair.split(',').map(Number);return [...document.querySelectorAll('[data-interface] rect')].some(port=>Number(port.getAttribute('x'))+5===x&&Number(port.getAttribute('y'))+5===y);})));
+    assert(portMatches,'every cable endpoint must coincide with a visible interface');
     await cable('SW1','gi0/2','SW2','gi0/2');assert.match(await page.locator('.free-message').innerText(),/loop/);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
@@ -116,8 +124,11 @@ try{
     assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
-    await page.locator('[data-node="PC4"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();
+    if(name==='mobile')await page.locator('[data-node="PC4"]').tap();else await page.locator('[data-node="PC4"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
+    await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
+    await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('[data-cable]').count(),2);
     console.log(`PASS free editor ${name}: add, pointer drag, cables, loop guard, CLI VLAN/trunk/shutdown, live coach, save/reopen and delete`);
     assert.deepEqual(errors,[],'uncaught browser errors');
     await context.close();console.log(`PASS UI ${name}: wrong/correct answer, bank switch, persistence, review and mission/CLI/save/finish/next with API fixtures`);
