@@ -10,7 +10,7 @@
     "build": "next build --webpack",
     "start": "next start -H 0.0.0.0",
     "content:validate": "node --experimental-strip-types scripts/validate-content-batch.mjs",
-    "test": "node --experimental-strip-types tests/engine.mjs && node --experimental-strip-types tests/content-pipeline.mjs && node --experimental-strip-types tests/exam.mjs && node --experimental-strip-types tests/training.mjs && node --experimental-strip-types tests/tutor.mjs && node --experimental-strip-types tests/connectivity.mjs && node --experimental-strip-types tests/aliases.mjs && node --experimental-strip-types tests/mission-bank.mjs && node --experimental-strip-types tests/db-errors.mjs"
+    "test": "node --experimental-strip-types tests/engine.mjs && node --experimental-strip-types tests/content-pipeline.mjs && node --experimental-strip-types tests/exam.mjs && node --experimental-strip-types tests/training.mjs && node --experimental-strip-types tests/tutor.mjs && node --experimental-strip-types tests/connectivity.mjs && node --experimental-strip-types tests/aliases.mjs && node --experimental-strip-types tests/mission-bank.mjs && node --experimental-strip-types tests/db-errors.mjs && node --experimental-strip-types tests/free-network.mjs"
   },
   "dependencies": {
     "next": "16.3.8",
