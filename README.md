@@ -62,3 +62,10 @@ Na topologia, selecione PC1 ou PC2. Comandos disponíveis: ipconfig, ping PC1, p
 
 ## Fluxo de finalização (2.1)
 Após configurar, clique em **Verificar e salvar**. Se todos os critérios forem atendidos e o servidor confirmar o registro, **Finalizar laboratório** fica disponível. Depois, **Iniciar próxima situação** abre o laboratório seguinte e limpa o estado da tentativa. Se o salvamento falhar, a finalização não é liberada.
+
+## Laboratórios guiados: revisão de trunk e LACP
+- Missão `vlan-preserve`: recuperar VLAN 30 preservando 10 e 20.
+- CLI suporta `switchport trunk allowed vlan add/remove` e LACP active/passive. Lista vazia após remove significa nenhuma VLAN, não all.
+- Avaliação e conectividade simulada verificam compatibilidade LACP por regras; não executam negociação real.
+- Na missão, abra “Prática correspondente no Packet Tracer” para roteiros 2.2/2.4 e prática distinta de rota flutuante 3.3.d.
+- Sem migração de progresso ou alteração de variáveis da Hostinger.

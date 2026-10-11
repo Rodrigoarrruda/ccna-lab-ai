@@ -63,3 +63,6 @@ A sessão de questões deixa de percorrer um banco fixo de seis itens. O progres
 ### Limites pedagógicos
 
 O blueprint organiza o estudo, mas não autoriza reproduzir questões confidenciais ou vazadas da certificação. O pacote é autoral e deve crescer por objetivo, com revisão técnica e questões de cenários antes de ser tratado como preparação completa para a prova.
+
+## Recorte: laboratório guiado inspirado nas referências visuais
+Topologia existente e terminal permanecem a base. Nova missão recupera trunk mantendo VLANs anteriores; LACP registra active/passive e verifica compatibilidade deterministicamente. Roteiros Packet Tracer cobrem 2.2, 2.4 e 3.3.d. Não há IOS real nem avaliação automática da execução externa. Consulte docs/GUIDED-LABS-ACCEPTANCE.md.
