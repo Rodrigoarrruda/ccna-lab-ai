@@ -117,3 +117,6 @@ main{max-width:1680px}header{padding-bottom:4px}h1{font-weight:760}
 .exam-option{white-space:pre-wrap;overflow-wrap:anywhere}
 .exam-mode{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:24px 0}
 .exam-mode select{max-width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:#203744;font:inherit}
+.exam-coach>*,.exam-intro>div,.exam-question,.exam-options{min-width:0}
+.exam-mode select{min-width:0;width:min(100%,360px)}
+.exam-intro small,.exam-score span{overflow-wrap:anywhere}

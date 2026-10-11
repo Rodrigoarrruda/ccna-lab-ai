@@ -43,8 +43,9 @@ try{
     assert.equal(await page.locator('#exam-mode').inputValue(),'advanced');
     assert.match(await page.locator('.exam-question').innerText(),/DE 40/);
     assert.equal(await page.getByRole('button',{name:'Responder',exact:true}).isDisabled(),true);
-    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'horizontal overflow');
     await page.screenshot({path:`ui-artifacts/${name}-advanced.png`,fullPage:true});
+    const overflow=await page.evaluate(()=>({width:innerWidth,document:document.documentElement.scrollWidth,elements:[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,15).map(e=>({tag:e.tagName,class:e.className,right:e.getBoundingClientRect().right}))}));
+    assert(overflow.document<=overflow.width,JSON.stringify(overflow));
     await page.locator('.exam-option').filter({hasText:advancedExamQuestions[0].options[0]}).click();
     await page.getByRole('button',{name:'Responder',exact:true}).click();
     assert.match(await page.locator('.exam-feedback').innerText(),/Vamos corrigir/);
