@@ -1,3 +1,9 @@
+## Revisão de laboratórios guiados
+- Missão de diagnóstico preservando VLANs existentes.
+- Add/remove de VLANs e active/passive LACP no motor único.
+- Topologia mostra modos LACP e lista explicitamente vazia.
+- Roteiros Packet Tracer vinculados às missões; rota flutuante externa.
+
 
 ## Blueprint e seleção adaptativa — 2026-10-10
 

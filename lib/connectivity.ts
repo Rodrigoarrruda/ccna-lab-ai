@@ -1,8 +1,9 @@
-import type {State,Port} from './labs';
+import {permitsVlan,lacpCompatible} from './labs.ts';
+import type {State,Port} from './labs.ts';
 export type Host='PC1'|'PC2';
 export type PingResult={ok:boolean,reason:string,path:string[]};
 const endpoint:Record<Host,{device:string,port:string,ip:string}>={PC1:{device:'SW1',port:'gi0/1',ip:'192.168.10.11'},PC2:{device:'SW2',port:'gi0/1',ip:'192.168.10.12'}};
-function carries(p:Port,v:number){return p.up&&p.mode==='trunk'&&(p.allowed.length===0||p.allowed.includes(v));}
+function carries(p:Port,v:number){return p.up&&p.mode==='trunk'&&permitsVlan(p,v);}
 export function ping(s:State,source:Host,target:Host):PingResult{
  const a=endpoint[source],b=endpoint[target];const path=[source,a.device,b.device,target];
  if(source===target)return {ok:true,reason:'Resposta do próprio host.',path:[source]};
@@ -13,6 +14,7 @@ export function ping(s:State,source:Host,target:Host):PingResult{
  const vlan=ap.vlan;
  if(!s.devices[a.device].vlans[vlan]||!s.devices[b.device].vlans[vlan])return {ok:false,reason:`VLAN ${vlan} não existe em ambos os switches.`,path};
  if(a.device!==b.device){const left=s.devices.SW1.ports['gi0/24'],right=s.devices.SW2.ports['gi0/24'];
+ if((left.group||right.group)&&(!lacpCompatible(left,right)||!s.devices.SW1.ports['port-channel1']?.up||!s.devices.SW2.ports['port-channel1']?.up||!carries(s.devices.SW1.ports['port-channel1'],vlan)||!carries(s.devices.SW2.ports['port-channel1'],vlan)))return {ok:false,reason:'Configuração LACP/Port-channel incompatível no enlace simulado.',path};
  if(!carries(left,vlan)||!carries(right,vlan))return {ok:false,reason:`O enlace Gi0/24 não transporta a VLAN ${vlan} nas duas pontas.`,path};}
  return {ok:true,reason:`Resposta de ${b.ip}: bytes=32 tempo<1ms TTL=64 (simulado).`,path};
 }

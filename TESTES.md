@@ -79,3 +79,6 @@ Execute `node --experimental-strip-types tests/mission-bank.mjs`. Confirme que a
 - Alternar Dica inicial, Dica detalhada e Solução; confirmar que o nível selecionado aparece ativo.
 - Enviar uma pergunta e confirmar que a resposta é identificada como local ou generativa sem alterar a nota.
 - Reduzir a janela para celular; confirmar que as zonas passam a uma coluna, o console continua utilizável e o tutor permanece acessível.
+
+## Revisão de trunk e LACP
+Execute `node --experimental-strip-types tests/guided-labs.mjs`. Confira também: nova missão começa incompleta; adicionar VLAN 30 mantém 10 e 20; atribuição somente 30 reprova preservação; passive/passive reprova canal; active/passive aprova com portas/trunks compatíveis. Remover todas as VLANs de uma lista explícita não permite tráfego. Roteiros Packet Tracer devem abrir sem executar comandos ou marcar aprovação.
