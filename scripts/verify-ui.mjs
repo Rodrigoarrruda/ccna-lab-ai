@@ -106,6 +106,16 @@ try{
     assert(anchors.every(([a,b])=>a!==b),'cables must have distinct port endpoints');
     const portMatches=await page.locator('[data-cable]').evaluateAll(paths=>paths.every(path=>[path.dataset.start,path.dataset.end].every(pair=>{const [x,y]=pair.split(',').map(Number);return [...document.querySelectorAll('[data-interface] rect')].some(port=>Number(port.getAttribute('x'))+5===x&&Number(port.getAttribute('y'))+5===y);})));
     assert(portMatches,'every cable endpoint must coincide with a visible interface');
+    await page.getByLabel('Equipamento A',{exact:true}).selectOption('SW1');
+    const portValues=async(label)=>page.getByLabel(label,{exact:true}).locator('option').evaluateAll(items=>items.map(i=>i.value));
+    assert.deepEqual(await portValues('Porta A'),['','gi0/2','gi0/23']);
+    assert.equal(await page.getByLabel('Porta A',{exact:true}).inputValue(),'');
+    assert(await page.getByRole('button',{name:'Conectar cabo',exact:true}).isDisabled());
+    await page.getByLabel('Equipamento B',{exact:true}).selectOption('PC3');assert(await page.getByLabel('Porta B',{exact:true}).isDisabled());assert.match(await page.getByLabel('Porta B',{exact:true}).innerText(),/Sem portas disponíveis/);
+    await page.locator('.free-cables li').first().getByRole('button').click();
+    assert((await portValues('Porta A')).includes('gi0/1'));assert.deepEqual(await portValues('Porta B'),['','eth0']);assert(!(await page.getByLabel('Porta B',{exact:true}).isDisabled()));
+    await cable('PC3','eth0','SW1','gi0/1');
+    assert.equal(await page.getByLabel('Porta A',{exact:true}).inputValue(),'');assert.equal(await page.getByLabel('Porta B',{exact:true}).inputValue(),'');
     await cable('SW1','gi0/2','SW2','gi0/2');assert.match(await page.locator('.free-message').innerText(),/loop/);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);

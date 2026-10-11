@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {addNode,configurePC,connect,emptyNetwork,executeSwitch,localCoach,removeNode,restoreNetwork,testPing,validHost} from '../lib/free-network.ts';
+import {addNode,configurePC,connect,emptyNetwork,executeSwitch,freePorts,localCoach,removeNode,restoreNetwork,testPing,validHost} from '../lib/free-network.ts';
 let net=emptyNetwork();for(const kind of ['switch','switch','pc','pc'])net=addNode(net,kind);
 const link=(a,ap,b,bp)=>{net=connect(net,{node:a,port:ap},{node:b,port:bp});};
 link('PC3','eth0','SW1','gi0/1');link('PC4','eth0','SW2','gi0/1');link('SW1','gi0/24','SW2','gi0/24');
@@ -34,3 +34,11 @@ console.log('PASS: free topology, ports, loop rejection, CLI-derived VLAN/trunk/
 let named=emptyNetwork();named=addNode(named,'switch');for(const command of ['enable','configure terminal','vlan 10'])named=executeSwitch(named,'SW1',command).network;
 assert.equal(executeSwitch(named,'SW1','name '+ 'A'.repeat(33)).output.startsWith('%'),true);
 named=executeSwitch(named,'SW1','name '+ 'A'.repeat(32)).network;assert.doesNotThrow(()=>restoreNetwork(JSON.stringify(named)));
+
+let slots=emptyNetwork();slots=addNode(slots,'switch');for(let i=0;i<4;i++)slots=addNode(slots,'pc');
+assert.deepEqual(freePorts(slots,'missing'),[]);assert.deepEqual(freePorts(slots,'SW1'),['gi0/1','gi0/2','gi0/23','gi0/24']);
+for(const [index,port] of ['gi0/1','gi0/2','gi0/23','gi0/24'].entries())slots=connect(slots,{node:'SW1',port},{node:'PC'+(index+2),port:'eth0'});
+assert.deepEqual(freePorts(slots,'SW1'),[]);assert.deepEqual(freePorts(slots,'PC2'),[]);assert.deepEqual(freePorts(restoreNetwork(JSON.stringify(slots)),'SW1'),[]);
+const unplugged={...slots,cables:slots.cables.slice(1)};assert.deepEqual(freePorts(unplugged,'SW1'),['gi0/1']);assert.deepEqual(freePorts(unplugged,'PC2'),['eth0']);assert.deepEqual(freePorts(removeNode(slots,'PC2'),'SW1'),['gi0/1']);
+assert.equal(freePorts(slots,'SW1').length,0,'reading options cannot mutate occupancy');
+console.log('PASS: free ports, full switch, occupied PC, restore, cable deletion and device deletion.');
