@@ -67,7 +67,7 @@ try{
     await page.getByRole('button',{name:'Revisar este objetivo'}).click();
     assert.match(await page.locator('#study-module').innerText(),/1\.4/);
 
-    await page.locator('nav').getByRole('button',{name:'Laboratórios',exact:true}).click();
+    await page.locator('nav').getByRole('button',{name:'Laboratórios'}).click();
     const cli=page.locator('#cli');
     await cli.fill('configure terminal');await cli.press('Enter');
     assert.match(await page.locator('.terminal').innerText(),/enable primeiro/);
