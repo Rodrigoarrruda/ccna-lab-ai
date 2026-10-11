@@ -27,8 +27,8 @@ export function connect(network:FreeNetwork,a:Endpoint,b:Endpoint):FreeNetwork{
  if(left.kind==='pc'&&right.kind==='pc')throw Error('Nesta versão, conecte cada PC a um switch.');
  if(network.cables.some(c=>[c.a,c.b].some(e=>(e.node===a.node&&e.port===a.port)||(e.node===b.node&&e.port===b.port))))throw Error('Uma das portas já está ocupada.');
  const seen=new Set([a.node]),queue=[a.node];
- while(queue.length){const id=queue.shift()!;for(const c of network.cables){const other=c.a.node===id?c.b.node:c.b.node===id?c.a.node:undefined;if(other&&!seen.has(other)){seen.add(other);queue.push(other);}}}
- if(seen.has(b.node))throw Error('Esse enlace cria um loop. STP não está disponível nesta versão.');
+ while(queue.length){const id=queue.shift()!;for(const c of network.cables){const other=c.a.node===id?c.b.node:c.b.node===id?c.a.node:undefined;if(other&&network.nodes.find(n=>n.id===other)?.kind==='switch'&&!seen.has(other)){seen.add(other);queue.push(other);}}}
+ if(left.kind==='switch'&&right.kind==='switch'&&seen.has(b.node))throw Error('Esse enlace cria um loop. STP não está disponível nesta versão.');
  const next=structuredClone(network);next.serial++;next.cables.push({id:'cable'+next.serial,a:{...a},b:{...b}});return next;
 }
 export function validHost(ip:string){const values=ip.split('.');return values.length===4&&values.every(v=>/^(0|[1-9]\d{0,2})$/.test(v)&&+v<=255)&&+values[0]>=1&&+values[0]<224&&+values[0]!==127&&+values[3]>0&&+values[3]<255;}

@@ -32,5 +32,11 @@ for(const c of ['enable','configure terminal','vlan 10','exit','interface gi0/2'
 assert.match(testPing(v,'PC3','PC4').reason,/sem caminho L2/);
 // Limite de rotas, loop L3, IP padrão disponível e compatibilidade de versão antiga.
 cli('R1',['conf t']);for(let i=1;i<=31;i++)cli('R1',[`ip route 172.16.${i}.0 255.255.255.0 10.0.0.2`]);reject('R1','ip route 172.16.32.0 255.255.255.0 10.0.0.2');cli('R1',['end']);
+const saved=n;n=configurePC(n,'PC4','192.168.30.12');cli('R2',['conf t','ip route 0.0.0.0 0.0.0.0 10.0.0.1','end']);assert.match(testPing(n,'PC3','PC4').reason,/Loop de roteamento/);n=saved;
+let shared=emptyNetwork();for(const kind of ['router','switch','pc','pc'])shared=addNode(shared,kind);
+for(const [a,ap,b,bp] of [['R1','gi0/0','SW2','gi0/1'],['R1','gi0/1','SW2','gi0/2'],['PC3','eth0','SW2','gi0/23'],['PC4','eth0','SW2','gi0/24']])shared=connect(shared,{node:a,port:ap},{node:b,port:bp});
+for(const c of ['enable','configure terminal','interface gi0/0','ip address 192.168.10.1 255.255.255.0','no shutdown','interface gi0/1','ip address 192.168.20.1 255.255.255.0','no shutdown','end'])shared=executeSwitch(shared,'R1',c).network;
+for(const c of ['enable','configure terminal','vlan 10','exit','vlan 20','exit','interface gi0/1','switchport access vlan 10','interface gi0/23','switchport access vlan 10','interface gi0/2','switchport access vlan 20','interface gi0/24','switchport access vlan 20','end'])shared=executeSwitch(shared,'SW2',c).network;
+shared=configurePC(shared,'PC3','192.168.10.11','192.168.10.1');shared=configurePC(shared,'PC4','192.168.20.12','192.168.20.1');assert.equal(testPing(shared,'PC3','PC4').ok,true);assert.equal(testPing(restoreNetwork(JSON.stringify(shared)),'PC3','PC4').ok,true);
 const old=emptyNetwork();assert.doesNotThrow(()=>restoreNetwork(JSON.stringify(old)));
 console.log('PASS: routers, CLI modes, IPv4/gateway validation, connected/static/default routes, return path, VLAN failure, shutdown, persistence and route limit.');
