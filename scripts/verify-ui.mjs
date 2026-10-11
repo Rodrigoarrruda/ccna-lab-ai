@@ -101,10 +101,10 @@ try{
     assert.equal(await page.locator('[data-cable]').count(),3);
     assert.equal(await page.locator('[data-interface]').count(),10);
     await page.getByLabel('Equipamento A',{exact:true}).selectOption('SW1');
-    assert(!(await page.getByLabel('Equipamento B',{exact:true}).locator('option').evaluateAll(items=>items.map(i=>i.value))).includes('SW1')); 
+    assert(!(await page.getByLabel('Equipamento B',{exact:true}).locator('option').evaluateAll(items=>items.map(i=>i.value))).includes('SW1'));
     const anchors=await page.locator('[data-cable]').evaluateAll(paths=>paths.map(p=>[p.dataset.start,p.dataset.end]));
     assert(anchors.every(([a,b])=>a!==b),'cables must have distinct port endpoints');
-    const portMatches=await page.locator('[data-cable]').evaluateAll(paths=>paths.every(path=>[path.dataset.start,path.dataset.end].every(pair=>{const [x,y]=pair.split(',').map(Number);return [...document.querySelectorAll('[data-interface] rect')].some(port=>Number(port.getAttribute('x'))+5===x&&Number(port.getAttribute('y'))+5===y);}))); 
+    const portMatches=await page.locator('[data-cable]').evaluateAll(paths=>paths.every(path=>[path.dataset.start,path.dataset.end].every(pair=>{const [x,y]=pair.split(',').map(Number);return [...document.querySelectorAll('[data-interface] rect')].some(port=>Number(port.getAttribute('x'))+5===x&&Number(port.getAttribute('y'))+5===y);})));
     assert(portMatches,'every cable endpoint must coincide with a visible interface');
     await cable('SW1','gi0/2','SW2','gi0/2');assert.match(await page.locator('.free-message').innerText(),/loop/);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
