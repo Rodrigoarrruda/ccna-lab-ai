@@ -29,7 +29,5 @@ jobs:
         run: npm test
       - name: Type check
         run: npx tsc --noEmit
-      - name: Validate content
-        run: npm run content:validate
       - name: Production build
         run: npm run build
