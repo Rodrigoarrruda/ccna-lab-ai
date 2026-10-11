@@ -73,3 +73,12 @@ IDs separados preservam o histórico. “Objetivos consistentes neste banco” e
 Validação: npm ci, npm test, TypeScript e Webpack; testes cobrem gabaritos/distratores, IDs, proporções, objetivo válido, limites de consistência e regressão do banco original. Aceitação em Chromium mobile (390×844) e desktop (1365×900), mais inspeção visual das quatro capturas, aprovadas no GitHub Actions #63 (run 38110300884). scripts/verify-ui.mjs verifica resposta certa/errada, troca de banco, histórico após reload, revisão do objetivo e missão/CLI/avaliação/finalização/próxima situação. O teste usa fixtures nas APIs; não valida MySQL da Hostinger. Overflow mobile encontrado pela checagem foi corrigido. Publicação na Hostinger e integração real com MySQL permanecem pendentes; sem merge/deploy.
 
 Fontes: [Cisco blueprint v1.1](https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf), [Cisco performance-based labs](https://blogs.cisco.com/learning/new-performance-based-lab-exam-items-build-opportunities), [relatos públicos qualitativos](https://www.reddit.com/r/ccna/comments/1kdm0xt/biweekly_rccna_exam_passfail_discussion/). Não usamos questões reais ou vazadas. Não há promessa de equivalência exata em dificuldade nem cobertura de todos os subobjetivos nestes 40 itens.
+
+
+## Laboratório livre — editor inicial
+
+Nova aba para adicionar e arrastar PCs/switches, criar/excluir cabos por portas, configurar switching via CLI, definir IPv4 dos PCs e salvar/reabrir topologia neste navegador. Até 8 equipamentos, quatro portas por switch (Gi0/1,2,23,24), PCs /24 e enlaces switch-switch em trunk. Estado de rede em lib/free-network.ts; CLI reutiliza lib/labs.ts. Ping percorre os enlaces reais do desenho e respeita VLANs existentes, access/trunk, allowed list e shutdown. Tutor local explica o resultado atual e sugere verificação, sem alterar a configuração.
+
+Rejeita porta ocupada, self-link, PC-PC e loops. Sem STP, roteamento, EtherChannel ou pacotes reais; não é emulação completa do Packet Tracer. A persistência valida versão, equipamentos, IPs, portas, enlaces e configurações antes de reabrir.
+
+Testes em tests/free-network.mjs; aceitação mobile/desktop estendida em scripts/verify-ui.mjs. Resultado da CI registrado no PR; manter draft até todos os checks e inspeção visual.

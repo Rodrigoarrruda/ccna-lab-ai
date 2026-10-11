@@ -87,6 +87,37 @@ try{
     assert.match(await page.locator('.mission-header h2').innerText(),/EtherChannel/);
     assert.equal(await page.locator('.completion-panel').count(),0);
     assert.match(await page.locator('.terminal').innerText(),/Nova tentativa/);
+    await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.getByRole('button',{name:'+ Switch',exact:true}).click();
+    await page.getByRole('button',{name:'+ Switch',exact:true}).click();
+    await page.getByRole('button',{name:'+ PC',exact:true}).click();
+    await page.getByRole('button',{name:'+ PC',exact:true}).click();
+    const firstNode=page.locator('[data-node="SW1"]');await firstNode.scrollIntoViewIfNeeded();
+    const before=await firstNode.getAttribute('style');const box=await firstNode.boundingBox();
+    await page.mouse.move(box.x+30,box.y+20);await page.mouse.down();await page.mouse.move(box.x+70,box.y+50,{steps:5});await page.mouse.up();
+    assert.notEqual(await firstNode.getAttribute('style'),before,'node drag must update coordinates');
+    const cable=async(a,ap,b,bp)=>{await page.getByLabel('Equipamento A',{exact:true}).selectOption(a);await page.getByLabel('Porta A',{exact:true}).selectOption(ap);await page.getByLabel('Equipamento B',{exact:true}).selectOption(b);await page.getByLabel('Porta B',{exact:true}).selectOption(bp);await page.getByRole('button',{name:'Conectar cabo',exact:true}).click();};
+    await cable('PC3','eth0','SW1','gi0/1');await cable('PC4','eth0','SW2','gi0/1');await cable('SW1','gi0/24','SW2','gi0/24');
+    await cable('SW1','gi0/2','SW2','gi0/2');assert.match(await page.locator('.free-message').innerText(),/loop/);
+    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
+    assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
+    for(const device of ['SW1','SW2']){
+      await page.locator(`[data-node="${device}"]`).click();
+      for(const command of ['enable','configure terminal','vlan 10','exit','interface gi0/1','switchport mode access','switchport access vlan 10','interface gi0/24','switchport mode trunk','switchport trunk allowed vlan 10','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}
+    }
+    assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
+    await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
+    await page.screenshot({path:`ui-artifacts/${name}-free-network.png`,fullPage:true});
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'free editor document must fit viewport');
+    for(const command of ['configure terminal','interface gi0/24','shutdown','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}
+    assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
+    await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
+    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
+    assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
+    await page.locator('[data-node="PC4"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();
+    assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
+    console.log(`PASS free editor ${name}: add, pointer drag, cables, loop guard, CLI VLAN/trunk/shutdown, live coach, save/reopen and delete`);
     assert.deepEqual(errors,[],'uncaught browser errors');
     await context.close();console.log(`PASS UI ${name}: wrong/correct answer, bank switch, persistence, review and mission/CLI/save/finish/next with API fixtures`);
   }
