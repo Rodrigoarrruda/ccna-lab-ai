@@ -25,7 +25,7 @@ try{
   browser=await chromium.launch({headless:true});
   for(const [name,viewport] of [['mobile',{width:390,height:844}],['desktop',{width:1365,height:900}]]){
     const context=await browser.newContext({viewport,hasTouch:name==='mobile',httpCredentials:{username:'rodrigo',password}});
-    const page=await context.newPage();const errors=[];page.on('pageerror',error=>errors.push(error.message));
+    const page=await context.newPage();const closeCLI=async()=>{const b=page.getByRole('button',{name:'Ocultar teclado',exact:true});if(await b.count())await b.click();};const errors=[];page.on('pageerror',error=>errors.push(error.message));
     // Deterministic API fixtures test view behavior; they do not certify production DB access.
     const history=[];
     await page.route('**/api/progress',async route=>{
@@ -70,11 +70,11 @@ try{
 
     await page.locator('nav').getByRole('button',{name:'Laboratórios'}).click();
     const cli=page.locator('#cli');
-    await cli.fill('configure terminal');await cli.press('Enter');
+    await cli.fill('configure terminal');await cli.press('Enter');await closeCLI();
     assert.match(await page.locator('.terminal').innerText(),/enable primeiro/);
     for(const device of ['SW1','SW2']){
       if(device==='SW2')await page.locator('.devices').getByRole('button',{name:device,exact:true}).click();
-      for(const command of labs.find(l=>l.id==='vlan').solution){await cli.fill(command);await cli.press('Enter');}
+      for(const command of labs.find(l=>l.id==='vlan').solution){await cli.fill(command);await cli.press('Enter');await closeCLI();}
     }
     await page.getByRole('button',{name:'Verificar e salvar',exact:true}).click();
     await page.waitForSelector('.completion-panel');
@@ -121,25 +121,30 @@ try{
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
     for(const device of ['SW1','SW2']){
       await page.locator(`[data-node="${device}"]`).click();
-      for(const command of ['enable','configure terminal','vlan 10','exit','interface gi0/1','switchport mode access','switchport access vlan 10','interface gi0/24','switchport mode trunk','switchport trunk allowed vlan 10','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}
+      for(const command of ['enable','configure terminal','vlan 10','exit','interface gi0/1','switchport mode access','switchport access vlan 10','interface gi0/24','switchport mode trunk','switchport trunk allowed vlan 10','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');await closeCLI();}
     }
     assert(!((await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText()).includes('SW1>')),'selected SW2 terminal must not display SW1 history');
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await page.screenshot({path:`ui-artifacts/${name}-free-network.png`,fullPage:true});
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'free editor document must fit viewport');
-    for(const command of ['configure terminal','interface gi0/24','shutdown','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}
+    for(const command of ['configure terminal','interface gi0/24','shutdown','end']){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');await closeCLI();}
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
+    assert.match(await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText(),/shutdown/);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
+    assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
+    for(const c of ['enable','configure terminal','interface gi0/24','no shutdown','end']){await page.locator('#free-cli').fill(c);await page.locator('#free-cli').press('Enter');await closeCLI();}
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
     if(name==='mobile')await page.locator('[data-node="PC4"]').tap();else await page.locator('[data-node="PC4"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
-    await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
+    await page.locator('nav').getByRole('button',{name:'Início',exact:true}).click();
+    await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    assert.equal(await page.locator('[data-node]').count(),3);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('[data-cable]').count(),2);
-    await page.evaluate(()=>localStorage.removeItem('ccna-free-network-v1'));
+    await page.evaluate(()=>{localStorage.removeItem('ccna-free-network-v1');localStorage.removeItem('ccna-free-workspace-v1');});
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ Roteador',exact:true}).click();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ PC',exact:true}).click();
@@ -147,7 +152,7 @@ try{
     for(const [pc,address,gateway] of [['PC3','192.168.10.11','192.168.10.1'],['PC4','192.168.20.12','192.168.20.1']]){
       await page.locator(`[data-node="${pc}"]`).click();await page.getByLabel('Endereço IPv4',{exact:true}).fill(address);await page.getByLabel('Gateway padrão',{exact:true}).fill(gateway);await page.getByRole('button',{name:'Aplicar IPv4',exact:true}).click();
     }
-    const routerCLI=async(id,commands)=>{await page.locator(`[data-node="${id}"]`).click();if(commands[0]!=='enable'&&(await page.locator('.free-device .commandline label').innerText()).endsWith('>')){await page.locator('#free-cli').fill('enable');await page.locator('#free-cli').press('Enter');}for(const command of commands){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');}};
+    const routerCLI=async(id,commands)=>{await page.locator(`[data-node="${id}"]`).click();if(commands[0]!=='enable'&&(await page.locator('.free-device .commandline label').innerText()).endsWith('>')){await page.locator('#free-cli').fill('enable');await page.locator('#free-cli').press('Enter');await closeCLI();}for(const command of commands){await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');await closeCLI();}};
     for(const [id,lan,wan] of [['R1','192.168.10.1','10.0.0.1'],['R2','192.168.20.1','10.0.0.2']])await routerCLI(id,['enable','configure terminal','interface gi0/0',`ip address ${lan} 255.255.255.0`,'no shutdown','interface gi0/1',`ip address ${wan} 255.255.255.0`,'no shutdown','end']);
     await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/R1: sem rota/);
@@ -157,13 +162,33 @@ try{
     assert.match(await page.locator('.free-coach').innerText(),/ida e volta válido/);
     assert.match(await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText(),/S 192.168.10.0/);
     assert.equal(await page.locator('[data-interface]').count(),8);
+    await page.locator('#free-cli').fill('show running-config');await closeCLI();
+    const lastNetwork=await page.evaluate(()=>JSON.parse(localStorage.getItem('ccna-free-workspace-v1')).network);
+    await page.locator('nav').getByRole('button',{name:'Início',exact:true}).click();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    assert.equal(await page.locator('#free-cli').inputValue(),'show running-config');
+    assert.match(await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText(),/S 192.168.10.0/);
+    const reopened=await page.evaluate(()=>JSON.parse(localStorage.getItem('ccna-free-workspace-v1')).network);
+    assert.deepEqual(reopened.nodes,lastNetwork.nodes);assert.deepEqual(reopened.cables,lastNetwork.cables);assert.deepEqual(reopened.routers,lastNetwork.routers);
+    if(name==='mobile'){
+      await page.locator('#free-cli').focus();await page.setViewportSize({width:390,height:420});
+      await page.waitForFunction(()=>document.querySelector('.cli-workspace.is-typing')?.getBoundingClientRect().bottom<=innerHeight);
+      const visible=await page.locator('#free-cli').boundingBox();assert(visible.y>=0&&visible.y+visible.height<=420,'command field fits reduced visible viewport');
+      await page.screenshot({path:'ui-artifacts/mobile-cli-reduced-viewport.png'});
+      await closeCLI();assert.equal(await page.locator('.cli-workspace.is-typing').count(),0);assert.equal(await page.locator('#free-cli').inputValue(),'show running-config');
+      await page.setViewportSize(viewport);
+    }
+
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await page.screenshot({path:`ui-artifacts/${name}-free-router.png`,fullPage:true});
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'router editor must fit viewport');
     await routerCLI('R2',['configure terminal','interface gi0/1','shutdown','end']);assert.match(await page.locator('.free-coach').innerText(),/Investigue/);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
-    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();assert.match(await page.locator('.free-coach').innerText(),/ida e volta válido/);
+    await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();assert.match(await page.locator('.free-coach').innerText(),/Investigue/);
+    await routerCLI('R2',['configure terminal','interface gi0/1','no shutdown','end']);assert.match(await page.locator('.free-coach').innerText(),/ida e volta válido/);
     await page.locator('[data-node="R1"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();assert.equal(await page.locator('[data-cable]').count(),1);
+    const blockedPage=await context.newPage();await blockedPage.addInitScript(()=>{Storage.prototype.setItem=function(){throw new Error('test quota');};});
+    await blockedPage.goto(baseURL);await blockedPage.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();await blockedPage.getByRole('button',{name:'+ Switch',exact:true}).click();
+    await blockedPage.waitForFunction(()=>document.querySelector('.free-save-status')?.textContent.includes('Não foi possível salvar'));await blockedPage.close();
     console.log(`PASS routers ${name}: interfaces, PC gateways, missing route/return route, static routes, shutdown, persisted configuration and removal`);
     console.log(`PASS free editor ${name}: add, pointer drag, cables, loop guard, CLI VLAN/trunk/shutdown, live coach, save/reopen and delete`);
     assert.deepEqual(errors,[],'uncaught browser errors');
@@ -171,3 +196,4 @@ try{
   }
 }catch(error){console.error(serverLogs);throw error;}
 finally{await browser?.close();server.kill('SIGTERM');}
+

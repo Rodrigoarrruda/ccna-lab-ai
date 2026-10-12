@@ -85,3 +85,8 @@ Verificação: tests/free-routing.mjs e aceitação móvel/desktop em scripts/ve
 
 
 Seletores de enlace mostram apenas portas livres, limpam a seleção após conectar e indicam Sem portas disponíveis. Excluir cabo/equipamento libera interfaces imediatamente; estado restaurado respeita a ocupação. Verificação unitária e móvel/desktop no checklist docs/free-ports-acceptance.md.
+
+
+
+### Retomar trabalho e terminal móvel
+Laboratório livre salva automaticamente topologia, configurações, posição, seleção, histórico CLI e rascunho de comando no navegador; sair da aba ou recarregar restaura o trabalho. Migra o salvamento manual anterior; falhas de armazenamento ficam visíveis. O botão Salvar permanece para tentar novamente. Na retomada, o modo CLI volta ao usuário; a configuração é preservada. O terminal móvel é compacto, com modo foco baseado no visualViewport e botão Ocultar teclado. Nenhum estado de avaliação é alterado. QA em viewport reduzido simula espaço disponível, sem comprovar teclado Android real. Checklist docs/autosave-mobile-acceptance.md.
