@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {addNode,emptyNetwork} from '../lib/free-network.ts';
+import {emptyWorkspace,loadWorkspace,restoreWorkspace,workspaceKey,legacyKey} from '../lib/free-workspace.ts';
+const data=new Map(),storage={getItem:k=>data.get(k)??null};
+assert.deepEqual(loadWorkspace(storage),emptyWorkspace());
+const network=addNode(emptyNetwork(),'switch');data.set(legacyKey,JSON.stringify(network));assert.equal(loadWorkspace(storage).network.nodes.length,1);
+const saved={version:1,network,selected:'SW1',command:'show vlan brief',log:{SW1:['SW1> enable']}};data.set(workspaceKey,JSON.stringify(saved));assert.equal(loadWorkspace(storage).command,'show vlan brief');assert.deepEqual(loadWorkspace(storage).log,saved.log);
+assert.equal(restoreWorkspace(JSON.stringify({...saved,selected:'missing'})).selected,'');
+assert.equal(restoreWorkspace(JSON.stringify({...saved,command:'x'.repeat(201),log:{SW1:Array(101).fill('x'),fake:['ignored']}})).command.length,200);
+assert.equal(restoreWorkspace(JSON.stringify({...saved,log:{SW1:Array(101).fill('x')}})).log.SW1.length,100);
+data.set(workspaceKey,'broken');assert.throws(()=>loadWorkspace(storage));assert.equal(data.get(workspaceKey),'broken','invalid data must not be overwritten while loading');
+assert.throws(()=>loadWorkspace({getItem:()=>{throw Error('storage blocked');}}));
+console.log('PASS: workspace migration, selection/history/draft restoration, bounds and corrupt/blocked storage.');
+
+const pingNetwork=addNode(addNode(network,'pc'),'pc');const pingWorkspace=restoreWorkspace(JSON.stringify({...saved,network:pingNetwork,source:'PC2',target:'PC3',tested:true}));assert.equal(pingWorkspace.tested,true);assert.equal(pingWorkspace.source,'PC2');assert.equal(restoreWorkspace(JSON.stringify({...saved,source:'missing',target:'PC3',tested:true})).tested,false);
