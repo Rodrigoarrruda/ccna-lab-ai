@@ -10,13 +10,13 @@ export default function FreeNetworkEditor(){
  const [network,setNetwork]=useState<FreeNetwork>(emptyNetwork),[selected,setSelected]=useState(''),[message,setMessage]=useState(''),[from,setFrom]=useState(''),[to,setTo]=useState(''),[fromPort,setFromPort]=useState(''),[toPort,setToPort]=useState(''),[source,setSource]=useState(''),[target,setTarget]=useState(''),[tested,setTested]=useState(false),[command,setCommand]=useState(''),[log,setLog]=useState<Record<string,string[]>>({}),[ip,setIP]=useState(''),[gateway,setGateway]=useState('');
  const [ready,setReady]=useState(false),[saveStatus,setSaveStatus]=useState('Carregando trabalho salvo…');
  const lastSaved=useRef(JSON.stringify(emptyWorkspace()));
- const snapshot={version:1 as const,network,selected,command,log};const latest=useRef(snapshot);latest.current=snapshot;
+ const snapshot={version:1 as const,network,selected,command,log,source,target,tested};const latest=useRef(snapshot);latest.current=snapshot;
  function saveWork(force=false){if(!ready)return;try{const raw=JSON.stringify(latest.current);if(!force&&raw===lastSaved.current)return;localStorage.setItem(workspaceKey,raw);lastSaved.current=raw;setSaveStatus('Alterações salvas automaticamente neste navegador.');}catch{setSaveStatus('Não foi possível salvar. Mantenha esta aba aberta e tente Salvar topologia novamente.');}}
  const terminal=useRef<HTMLDivElement>(null);
  useEffect(()=>{if(terminal.current)terminal.current.scrollTop=terminal.current.scrollHeight;},[log,selected]);
  const drag=useRef<{id:string,x:number,y:number,clientX:number,clientY:number}|null>(null);
- useEffect(()=>{try{const saved=loadWorkspace(localStorage);setNetwork(saved.network);setSelected(saved.selected);setCommand(saved.command);setLog(saved.log);const n=saved.network.nodes.find(n=>n.id===saved.selected);setIP(n?.ip??'');setGateway(n?.gateway??'');lastSaved.current=JSON.stringify(saved);setSaveStatus('Salvamento automático ativo neste navegador.');}catch{setSaveStatus('Não foi possível reabrir o trabalho salvo. Os dados anteriores não foram apagados.');}setReady(true);},[]);
- useEffect(()=>{saveWork();},[ready,network,selected,command,log]);
+ useEffect(()=>{try{const saved=loadWorkspace(localStorage);setNetwork(saved.network);setSelected(saved.selected);setCommand(saved.command);setLog(saved.log);setSource(saved.source);setTarget(saved.target);setTested(saved.tested);const n=saved.network.nodes.find(n=>n.id===saved.selected);setIP(n?.ip??'');setGateway(n?.gateway??'');lastSaved.current=JSON.stringify(saved);setSaveStatus('Salvamento automático ativo neste navegador.');}catch{setSaveStatus('Não foi possível reabrir o trabalho salvo. Os dados anteriores não foram apagados.');}setReady(true);},[]);
+ useEffect(()=>{saveWork();},[ready,network,selected,command,log,source,target,tested]);
  useEffect(()=>{if(!ready)return;const flush=()=>saveWork();window.addEventListener('pagehide',flush);return()=>window.removeEventListener('pagehide',flush);},[ready]);
  const node=network.nodes.find(n=>n.id===selected),pcs=network.nodes.filter(n=>n.kind==='pc');
  const left=network.nodes.find(n=>n.id===from),right=network.nodes.find(n=>n.id===to);
