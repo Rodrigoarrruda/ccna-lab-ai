@@ -172,6 +172,7 @@ try{
     if(name==='mobile'){
       await page.locator('#free-cli').focus();await page.setViewportSize({width:390,height:420});
       await page.waitForFunction(()=>document.querySelector('.cli-workspace.is-typing')?.getBoundingClientRect().bottom<=innerHeight);
+      await page.waitForFunction(()=>{const t=document.querySelector('.cli-workspace.is-typing .terminal');return t&&Math.abs(t.scrollHeight-t.scrollTop-t.clientHeight)<2;});
       const visible=await page.locator('#free-cli').boundingBox();assert(visible.y>=0&&visible.y+visible.height<=420,'command field fits reduced visible viewport');
       await page.screenshot({path:'ui-artifacts/mobile-cli-reduced-viewport.png'});
       await closeCLI();assert.equal(await page.locator('.cli-workspace.is-typing').count(),0);assert.equal(await page.locator('#free-cli').inputValue(),'show running-config');

@@ -11,3 +11,5 @@ assert.equal(restoreWorkspace(JSON.stringify({...saved,log:{SW1:Array(101).fill(
 data.set(workspaceKey,'broken');assert.throws(()=>loadWorkspace(storage));assert.equal(data.get(workspaceKey),'broken','invalid data must not be overwritten while loading');
 assert.throws(()=>loadWorkspace({getItem:()=>{throw Error('storage blocked');}}));
 console.log('PASS: workspace migration, selection/history/draft restoration, bounds and corrupt/blocked storage.');
+
+const pingNetwork=addNode(addNode(network,'pc'),'pc');const pingWorkspace=restoreWorkspace(JSON.stringify({...saved,network:pingNetwork,source:'PC2',target:'PC3',tested:true}));assert.equal(pingWorkspace.tested,true);assert.equal(pingWorkspace.source,'PC2');assert.equal(restoreWorkspace(JSON.stringify({...saved,source:'missing',target:'PC3',tested:true})).tested,false);
