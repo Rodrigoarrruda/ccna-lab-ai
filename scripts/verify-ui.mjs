@@ -139,7 +139,7 @@ try{
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
     if(name==='mobile')await page.locator('[data-node="PC4"]').tap();else await page.locator('[data-node="PC4"]').click();await page.getByRole('button',{name:'Excluir equipamento selecionado',exact:true}).click();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
-    await page.locator('nav').getByRole('button',{name:'Início',exact:true}).click();
+    await page.locator('nav').getByRole('button',{name:'Início'}).click();
     await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     assert.equal(await page.locator('[data-node]').count(),3);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
@@ -164,7 +164,7 @@ try{
     assert.equal(await page.locator('[data-interface]').count(),8);
     await page.locator('#free-cli').fill('show running-config');await closeCLI();
     const lastNetwork=await page.evaluate(()=>JSON.parse(localStorage.getItem('ccna-free-workspace-v1')).network);
-    await page.locator('nav').getByRole('button',{name:'Início',exact:true}).click();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.locator('nav').getByRole('button',{name:'Início'}).click();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
     assert.equal(await page.locator('#free-cli').inputValue(),'show running-config');
     assert.match(await page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText(),/S 192.168.10.0/);
     const reopened=await page.evaluate(()=>JSON.parse(localStorage.getItem('ccna-free-workspace-v1')).network);
