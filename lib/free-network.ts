@@ -1,3 +1,4 @@
+import {maxNodeX,maxNodeY} from './topology-bounds.ts';
 import {routerPorts,newRouter,executeRouter,routedPing,addressInUse,subnet,type Router} from './free-routing.ts';
 import {initial,run,expandCisco,type State} from './labs.ts';
 export const switchPorts=['gi0/1','gi0/2','gi0/23','gi0/24'];
@@ -12,7 +13,7 @@ export function addNode(network:FreeNetwork,kind:NetworkNode['kind'],x=100,y=100
  if(network.nodes.length>=8)throw Error('Limite desta versão: 8 equipamentos.');
  const next=structuredClone(network);next.serial++;
  const id=(kind==='pc'?'PC':kind==='router'?'R':'SW')+next.serial;
- next.nodes.push({id,kind,x:Math.max(0,Math.min(780,x)),y:Math.max(0,Math.min(440,y)),ip:kind==='pc'?`192.168.10.${Array.from({length:244},(_,i)=>i+11).find(host=>!addressInUse(next,`192.168.10.${host}`,''))}`:''});
+ next.nodes.push({id,kind,x:Math.max(0,Math.min(maxNodeX,x)),y:Math.max(0,Math.min(maxNodeY,y)),ip:kind==='pc'?`192.168.10.${Array.from({length:244},(_,i)=>i+11).find(host=>!addressInUse(next,`192.168.10.${host}`,''))}`:''});
  if(kind==='router'){next.routers??={};next.routers[id]=newRouter();if(!next.config.device)next.config.device=id;}
  if(kind==='switch'){next.config.devices[id]=structuredClone(initial().devices.SW1);if(!next.config.device)next.config.device=id;}
  return next;
@@ -75,7 +76,7 @@ export function restoreNetwork(raw:string):FreeNetwork{
  const value=JSON.parse(raw) as FreeNetwork;
  if(value.version!==1||!Array.isArray(value.nodes)||!Array.isArray(value.cables)||value.nodes.length>8||!Number.isSafeInteger(value.serial)||value.serial<0||value.serial>1000000)throw Error('Topologia salva inválida.');
  const ids=new Set<string>(),ips=new Set<string>();const rebuilt=emptyNetwork();
- for(const n of value.nodes){if(!n||!['pc','switch','router'].includes(n.kind)||!new RegExp(n.kind==='pc'?'^PC[1-9][0-9]*$':n.kind==='router'?'^R[1-9][0-9]*$':'^SW[1-9][0-9]*$').test(n.id)||ids.has(n.id)||+n.id.slice(n.kind==='router'?1:2)>value.serial||!Number.isFinite(n.x)||!Number.isFinite(n.y)||n.x<0||n.x>780||n.y<0||n.y>440||typeof n.ip!=='string')throw Error('Equipamento salvo inválido.');ids.add(n.id);if(n.kind==='pc'){if(!validHost(n.ip)||ips.has(n.ip))throw Error('IPv4 salvo inválido.');ips.add(n.ip);if(n.gateway!==undefined&&typeof n.gateway!=='string')throw Error('Gateway salvo inválido.');if(n.gateway&&(!validHost(n.gateway)||subnet(n.gateway)!==subnet(n.ip)||n.gateway===n.ip))throw Error('Gateway salvo inválido.');}rebuilt.nodes.push({...n});}
+ for(const n of value.nodes){if(!n||!['pc','switch','router'].includes(n.kind)||!new RegExp(n.kind==='pc'?'^PC[1-9][0-9]*$':n.kind==='router'?'^R[1-9][0-9]*$':'^SW[1-9][0-9]*$').test(n.id)||ids.has(n.id)||+n.id.slice(n.kind==='router'?1:2)>value.serial||!Number.isFinite(n.x)||!Number.isFinite(n.y)||n.x<0||n.x>maxNodeX||n.y<0||n.y>maxNodeY||typeof n.ip!=='string')throw Error('Equipamento salvo inválido.');ids.add(n.id);if(n.kind==='pc'){if(!validHost(n.ip)||ips.has(n.ip))throw Error('IPv4 salvo inválido.');ips.add(n.ip);if(n.gateway!==undefined&&typeof n.gateway!=='string')throw Error('Gateway salvo inválido.');if(n.gateway&&(!validHost(n.gateway)||subnet(n.gateway)!==subnet(n.ip)||n.gateway===n.ip))throw Error('Gateway salvo inválido.');}rebuilt.nodes.push({...n});}
  const cableIds=new Set<string>();for(const c of value.cables){if(!c||!/^cable[1-9][0-9]*$/.test(c.id)||+c.id.slice(5)>value.serial||cableIds.has(c.id))throw Error('Cabo salvo inválido.');cableIds.add(c.id);const checked=connect(rebuilt,c.a,c.b);rebuilt.cables=checked.cables;rebuilt.cables[rebuilt.cables.length-1].id=c.id;}
  if(!value.config?.devices||Object.keys(value.config.devices).length!==value.nodes.filter(n=>n.kind==='switch').length)throw Error('Configuração salva inválida.');
  for(const n of value.nodes.filter(n=>n.kind==='switch')){const d=value.config.devices[n.id];if(!d||!d.vlans||!d.ports||d.routing!==false||Object.keys(d.ports).length!==4||Object.keys(d.vlans).some(v=>!/^\d+$/.test(v)||+v<1||+v>4094||typeof d.vlans[v]!=='string'||d.vlans[v].length>32))throw Error('Switch salvo inválido.');for(const id of switchPorts){const p=d.ports[id];if(!p||!['access','trunk'].includes(p.mode)||!Number.isInteger(p.vlan)||p.vlan<1||p.vlan>4094||typeof p.up!=='boolean'||!Array.isArray(p.allowed)||p.allowed.some(v=>!Number.isInteger(v)||v<1||v>4094)||p.group!==0||p.ip!=='')throw Error('Porta salva inválida.');}rebuilt.config.devices[n.id]=structuredClone(d);}
@@ -84,3 +85,4 @@ export function restoreNetwork(raw:string):FreeNetwork{
  const prefixes=new Set<string>();for(const t of r.routes){if(!t||typeof t.network!=='string'||!((t.mask==='255.255.255.0'&&t.network===subnet(t.network)&&validHost(t.network.replace(/\.0$/,'.1')))||(t.mask==='0.0.0.0'&&t.network==='0.0.0.0'))||!validHost(t.nextHop)||Object.values(r.interfaces).some(i=>i.ip===t.nextHop)||prefixes.has(t.network))throw Error('Rota estática salva inválida.');prefixes.add(t.network);}rebuilt.routers[n.id]=structuredClone(r);}
  rebuilt.serial=value.serial;rebuilt.config.device=rebuilt.nodes.find(n=>n.kind==='switch')?.id??'';return rebuilt;
 }
+
