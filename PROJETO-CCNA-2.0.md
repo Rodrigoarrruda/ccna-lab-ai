@@ -103,3 +103,8 @@ Laboratório livre salva automaticamente topologia, configurações, posição, 
 
 ### Área de trabalho integrada
 Desktop reúne desenho e configuração/tutor lado a lado; celular alterna Rede, Terminal e Tutor sem desmontar o editor. Zoom de 25% a 200%, Enquadrar toda a rede e rolagem. Drag/drop convertem coordenadas pela escala; cabos permanecem nas interfaces. Inspeção mostra ligações, access VLAN/trunk/allowed list, shutdown e IPv4 diretamente do estado da rede. A visualização não altera configuração ou avaliação. Salvamento automático permanece. Ver rede no terminal móvel retorna ao desenho. Primeira entrega de usabilidade; modos guiados/diagnóstico ampliados e 3D são etapas posteriores. Checklist docs/integrated-workspace-acceptance.md.
+
+
+## Arraste com zoom reduzido — 2026-10-13
+
+Aceite: ocupar o espaço visível abaixo e à direita com zoom de 33%; manter interfaces e cabos alinhados; recuperar posições além dos limites antigos após recarregar; preservar limites e navegação da página. O canvas acompanha o viewport e as posições salvas, até 3600 × 2400 unidades. O limite de arraste reserva espaço para equipamento, interfaces e cabos. Testes puros cobrem escala, bordas e restauração; aceite de UI cobre arraste vertical com zoom reduzido e recarga, além da regressão do laboratório principal.

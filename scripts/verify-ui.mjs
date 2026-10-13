@@ -101,6 +101,15 @@ try{
     const before=await firstNode.getAttribute('style');const box=await firstNode.boundingBox();
     await page.mouse.move(box.x+30,box.y+20);await page.mouse.down();await page.mouse.move(box.x+70,box.y+50,{steps:5});await page.mouse.up();
     assert.notEqual(await firstNode.getAttribute('style'),before,'node drag must update coordinates');
+    for(let i=0;i<20;i++){const minus=page.getByRole('button',{name:'Diminuir zoom',exact:true});if(await minus.isDisabled())break;await minus.click();}
+    await firstNode.scrollIntoViewIfNeeded();
+    const smallBox=await firstNode.boundingBox();
+    await page.mouse.move(smallBox.x+10,smallBox.y+8);await page.mouse.down();await page.mouse.move(smallBox.x+10,smallBox.y+258,{steps:10});await page.mouse.up();
+    const movedY=await firstNode.evaluate(n=>parseFloat(n.style.top));assert(movedY>440,'zoomed-out node must cross old vertical boundary');
+    assert(await page.evaluate(()=>{const area=document.querySelector('.free-canvas-wrap').getBoundingClientRect(),node=document.querySelector('[data-node="SW1"]').getBoundingClientRect();return node.bottom<=area.bottom&&node.top>=area.top;}),'dragged device remains visible in canvas');
+    await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();await view('Rede');
+    assert.equal(await firstNode.evaluate(n=>parseFloat(n.style.top)),movedY,'position beyond old boundary must survive reload');
+    await page.getByRole('button',{name:'Enquadrar toda a rede',exact:true}).click();
     const cable=async(a,ap,b,bp)=>{await view('Rede');await page.getByLabel('Equipamento A',{exact:true}).selectOption(a);await page.getByLabel('Porta A',{exact:true}).selectOption(ap);await page.getByLabel('Equipamento B',{exact:true}).selectOption(b);await page.getByLabel('Porta B',{exact:true}).selectOption(bp);await page.getByRole('button',{name:'Conectar cabo',exact:true}).click();};
     await cable('PC3','eth0','SW1','gi0/1');await cable('PC4','eth0','SW2','gi0/1');await cable('SW1','gi0/24','SW2','gi0/24');
     assert.equal(await page.locator('[data-cable]').count(),3);
