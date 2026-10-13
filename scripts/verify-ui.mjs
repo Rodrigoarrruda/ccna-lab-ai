@@ -43,7 +43,7 @@ try{
     assert.equal(await page.locator('#exam-mode').inputValue(),'advanced');
     assert.match(await page.locator('.exam-question').innerText(),/DE 40/);
     assert.equal(await page.getByRole('button',{name:'Responder',exact:true}).isDisabled(),true);
-    await page.screenshot({path:`ui-artifacts/${name}-advanced.png`,fullPage:true});
+    await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`ui-artifacts/${name}-advanced.png`,fullPage:true});
     const overflow=await page.evaluate(()=>({width:innerWidth,document:document.documentElement.scrollWidth,elements:[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,15).map(e=>({tag:e.tagName,class:e.className,right:e.getBoundingClientRect().right}))}));
     assert(overflow.document<=overflow.width,JSON.stringify(overflow));
     await page.locator('.exam-option').filter({hasText:advancedExamQuestions[0].options[0]}).click();
@@ -82,7 +82,7 @@ try{
     assert.equal(await page.getByRole('button',{name:'Finalizar laboratório',exact:true}).isEnabled(),true);
     await page.getByRole('button',{name:'Finalizar laboratório',exact:true}).click();
     assert.match(await page.locator('.completion-panel').innerText(),/Missão finalizada/);
-    await page.screenshot({path:`ui-artifacts/${name}-lab-finished.png`,fullPage:true});
+    await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`ui-artifacts/${name}-lab-finished.png`,fullPage:true});
     await page.getByRole('button',{name:'Iniciar próxima situação'}).click();
     assert.match(await page.locator('.mission-header h2').innerText(),/EtherChannel/);
     assert.equal(await page.locator('.completion-panel').count(),0);
@@ -132,8 +132,8 @@ try{
     assert.match(await page.locator('.free-coach').innerText(),/Conectividade confirmada/);
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await view('Rede');await page.getByRole('button',{name:'Enquadrar toda a rede',exact:true}).click();
-    await page.screenshot({path:`ui-artifacts/${name}-free-network.png`,fullPage:true});
-    if(name==='mobile'){await view('Terminal');await page.screenshot({path:'ui-artifacts/mobile-workspace-terminal.png',fullPage:true});await view('Tutor');await page.screenshot({path:'ui-artifacts/mobile-workspace-tutor.png',fullPage:true});}
+    await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`ui-artifacts/${name}-free-network.png`,fullPage:true});
+    if(name==='mobile'){await view('Terminal');await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:'ui-artifacts/mobile-workspace-terminal.png',fullPage:true});await view('Tutor');await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:'ui-artifacts/mobile-workspace-tutor.png',fullPage:true});}
     await view('Terminal');
     assert.match(await page.getByLabel('Interfaces do equipamento selecionado').innerText(),/gi0\/24/);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'free editor document must fit viewport');
@@ -183,14 +183,14 @@ try{
       await page.waitForFunction(()=>document.querySelector('.cli-workspace.is-typing')?.getBoundingClientRect().bottom<=innerHeight);
       await page.waitForFunction(()=>{const t=document.querySelector('.cli-workspace.is-typing .terminal');return t&&Math.abs(t.scrollHeight-t.scrollTop-t.clientHeight)<2;});
       const visible=await page.locator('#free-cli').boundingBox();assert(visible.y>=0&&visible.y+visible.height<=420,'command field fits reduced visible viewport');
-      await page.screenshot({path:'ui-artifacts/mobile-cli-reduced-viewport.png'});
+      await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:'ui-artifacts/mobile-cli-reduced-viewport.png'});
       await page.getByRole('button',{name:'Ver rede',exact:true}).click();assert.equal(await page.locator('.free-editor').getAttribute('data-mobile-view'),'rede');assert.equal(await page.locator('.cli-workspace.is-typing').count(),0);assert.equal(await page.locator('#free-cli').inputValue(),'show running-config');
       await page.setViewportSize(viewport);
     }
 
     await page.getByRole('button',{name:'Salvar topologia',exact:true}).click();
     await view('Rede');await page.getByRole('button',{name:'Enquadrar toda a rede',exact:true}).click();
-    await page.screenshot({path:`ui-artifacts/${name}-free-router.png`,fullPage:true});
+    await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`ui-artifacts/${name}-free-router.png`,fullPage:true});
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'router editor must fit viewport');
     await routerCLI('R2',['configure terminal','interface gi0/1','shutdown','end']);assert.match(await page.locator('.free-coach').innerText(),/Investigue/);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
