@@ -98,3 +98,7 @@ Seletores de enlace mostram apenas portas livres, limpam a seleção após conec
 
 ### Retomar trabalho e terminal móvel
 Laboratório livre salva automaticamente topologia, configurações, posição, seleção, histórico CLI e rascunho de comando no navegador; sair da aba ou recarregar restaura o trabalho. Migra o salvamento manual anterior; falhas de armazenamento ficam visíveis. O botão Salvar permanece para tentar novamente. Na retomada, o modo CLI volta ao usuário; a configuração é preservada. O terminal móvel é compacto, com modo foco baseado no visualViewport e botão Ocultar teclado. Nenhum estado de avaliação é alterado. QA em viewport reduzido simula espaço disponível, sem comprovar teclado Android real. Checklist docs/autosave-mobile-acceptance.md.
+
+
+### Área de trabalho integrada
+Desktop reúne desenho e configuração/tutor lado a lado; celular alterna Rede, Terminal e Tutor sem desmontar o editor. Zoom de 25% a 200%, Enquadrar toda a rede e rolagem. Drag/drop convertem coordenadas pela escala; cabos permanecem nas interfaces. Inspeção mostra ligações, access VLAN/trunk/allowed list, shutdown e IPv4 diretamente do estado da rede. A visualização não altera configuração ou avaliação. Salvamento automático permanece. Ver rede no terminal móvel retorna ao desenho. Primeira entrega de usabilidade; modos guiados/diagnóstico ampliados e 3D são etapas posteriores. Checklist docs/integrated-workspace-acceptance.md.
