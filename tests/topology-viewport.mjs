@@ -14,5 +14,5 @@ assert(moved.y>440);assert(moved.y*.33+148*.33<=400+1);
 assert.deepEqual(dragPosition(50,50,-9999,-9999,.33,extent.width,extent.height),{x:0,y:0});
 const expanded=canvasExtent([{...nodes[0],x:1200,y:1000}],338,400,1);assert(expanded.width>=1310&&expanded.height>=1148);
 import {addNode,emptyNetwork,restoreNetwork} from '../lib/free-network.ts';
-const network=addNode(emptyNetwork(),'switch',1200,1000);assert.equal(restoreNetwork(network).nodes[0].y,1000);
-assert.throws(()=>restoreNetwork({...network,nodes:[{...network.nodes[0],y:2401}]}));
+const network=addNode(emptyNetwork(),'switch',1200,1000);assert.equal(restoreNetwork(JSON.stringify(network)).nodes[0].y,1000);
+assert.throws(()=>restoreNetwork(JSON.stringify({...network,nodes:[{...network.nodes[0],y:2401}]})));
