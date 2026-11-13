@@ -6,7 +6,7 @@ Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2,
 
 - Seleção de SW1/SW2 na topologia e execução de comandos Cisco no console.
 - Configuração simulada de VLANs, portas access, trunks e EtherChannel, conforme comandos reconhecidos pelo motor.
-- Teste de conectividade **simulada** entre PC1 (SW1 Gi0/1, `192.168.10.11`) e PC2 (SW2 Gi0/1, `192.168.10.12`).
+- Teste de conectividade **simulada** entre PC1 (SW1 Gi0/1) e PC2 (SW2 Gi0/1), com endereços coerentes com a VLAN principal de cada missão.
 - `ping PC2` no console SW1 e `ping PC1` no console SW2; `show mac address-table` exibe entradas calculadas a partir da topologia.
 - Tutor em três níveis (dica inicial, detalhada e solução) com fallback local identificado quando a OpenAI estiver indisponível.
 - Avaliação de laboratório baseada em regras, independente do tutor IA.
@@ -58,7 +58,7 @@ Consulte [TESTES.md](TESTES.md) para roteiro completo e [CHANGELOG.md](CHANGELOG
 `next.config.mjs` foi preservado, a dependência Next.js está fixada em `16.4.6` e o script de build usa `next build --webpack`. A documentação não comprova homologação em produção: execute o build no ambiente de destino antes de publicar.
 
 ## Terminais dos PCs (Cisco L2.2)
-Na topologia, selecione PC1 ou PC2. Comandos disponíveis: ipconfig, ping PC1, ping PC2, ping 192.168.10.11, ping 192.168.10.12 e help. IPs fixos. Simulação por regras, sem pacotes reais. Comandos de PC não afetam a nota.
+Na topologia, selecione PC1 ou PC2. Comandos disponíveis: ipconfig, ping PC1, ping PC2, ping pelo endereço exibido na topologia e help. O endereço é definido pela VLAN principal da missão (VLANs 10, 30 e 50 nos cenários atuais). A conectividade depende das portas access, da VLAN e do trunk entre switches. Simulação por regras, sem pacotes reais. Comandos de PC não afetam a nota.
 
 ## Fluxo de finalização (2.1)
 Após configurar, clique em **Verificar e salvar**. Se todos os critérios forem atendidos e o servidor confirmar o registro, **Finalizar laboratório** fica disponível. Depois, **Iniciar próxima situação** abre o laboratório seguinte e limpa o estado da tentativa. Se o salvamento falhar, a finalização não é liberada.

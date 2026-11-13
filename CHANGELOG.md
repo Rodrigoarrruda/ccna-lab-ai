@@ -1,5 +1,11 @@
 # Histórico de versões — CCNA Lab AI
 
+## Conectividade por missão — 2026-11-13
+- IPs simulados dos PCs agora seguem a VLAN principal da missão, e os terminais resolvem endereços da topologia atual.
+- Avaliação e conectividade conferem Gi0/1 dos dois switches; soluções VLAN agora configuram os endpoints PC1 e PC2 explicitamente.
+- Testes cobrem conectividade e falhas de trunk/access nas missões VLAN 10, 30 e 50.
+- Ajuda contextual por modo, abreviações show com resolução única e histórico de comandos pelas setas do teclado.
+
 ## Segurança de dependências — 2026-11-13
 - Atualizado Next.js de 16.3.8 para 16.4.6 para corrigir vulnerabilidades reportadas pelo npm audit.
 - Limitada a leitura dos corpos das APIs por bytes, inclusive quando `Content-Length` está ausente, e separados erros de entrada inválida de falhas de persistência.

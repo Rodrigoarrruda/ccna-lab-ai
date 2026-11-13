@@ -39,6 +39,9 @@ end
 - Em SW2, executar `configure terminal`, `interface gi0/24`, `switchport trunk allowed vlan 20`; no SW1, repetir `ping PC2`; esperar falha por VLAN 10 não permitida.
 - Desligar uma porta de acesso usada e verificar que o ping falha; restaurar configuração e verificar retorno da conectividade.
 - Reiniciar o laboratório e conferir retorno ao estado inicial.
+- Digitar `?` nos modos EXEC, configuração global, VLAN e interface; conferir que a ajuda muda conforme o contexto.
+- Usar as setas para cima/baixo no terminal para navegar pelos últimos comandos e restaurar o texto que estava sendo digitado.
+- Testar `sh v br` e `sh eth sum`; a abreviação ambígua `sh i` deve continuar sendo rejeitada.
 
 ## 3. Avaliação e tutor (manual)
 
@@ -72,4 +75,4 @@ O motor não encaminha quadros Ethernet reais nem executa ARP, STP ou negociaç�
 5. Simule falha no endpoint de progresso; confirme que o laboratório não pode ser finalizado sem persistência.
 
 ## Banco de missões 2.2
-Execute `node --experimental-strip-types tests/mission-bank.mjs`. Confirme que as soluções de referência aprovam ambos os switches e que configurações parciais não são aprovadas.
+Execute `node --experimental-strip-types tests/mission-bank.mjs` e `node --experimental-strip-types tests/connectivity.mjs`. Confirme que as soluções de referência aprovam os critérios e conectam PC1/PC2 nas missões VLAN 10, 30 e 50; bloquear a VLAN no trunk ou colocar Gi0/1 de PC2 em VLAN diferente deve interromper o ping.

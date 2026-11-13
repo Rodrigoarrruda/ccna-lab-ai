@@ -10,13 +10,14 @@ Transformar cada laboratório em uma tarefa de troubleshooting/configuração ba
 - Cabeçalho de missão com cenário, objetivo, contagem dinâmica de critérios e duração estimada.
 - Substituição de “Configuração esperada” por “Critérios de aprovação”.
 - Atalhos iniciais Cisco IOS: `en`, `conf t`, `int gi0/1`, `sh vlan br`, `sh int tr`, `sh run`, `sh ip int br`, `sh etherchannel sum`, `sw mo acc`, `sw mo tr`, `sw acc vlan N`.
+- Ajuda contextual (`?`), navegação pelo histórico com ↑/↓ e abreviações `show` expandidas somente quando únicas.
 - Preservação do motor determinístico e da API existente.
 
 ## Critérios de aceite da atualização
 1. Ao abrir o laboratório, o cenário e a missão aparecem acima da topologia e do console.
 2. Os critérios concluídos atualizam ao executar comandos.
 3. Comandos completos e abreviados equivalentes produzem o mesmo estado.
-4. Abreviações desconhecidas continuam rejeitadas; não há execução por aproximação insegura.
+4. Abreviações desconhecidas ou ambíguas continuam rejeitadas; não há execução por aproximação insegura.
 5. `npm test` e `npm run build` precisam passar antes da publicação.
 
 ## Roadmap priorizado
