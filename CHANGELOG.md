@@ -15,6 +15,12 @@
 
 # Histórico de versões — CCNA Lab AI
 
+## Acesso público e descoberta — 2026-11-13
+- Torna a página e as APIs acessíveis sem senha, preservando validação de origem em operações `POST` e cabeçalhos de segurança.
+- Adiciona metadados para buscadores e compartilhamento, `robots.txt`, sitemap e `llms.txt`.
+- Explicita na interface e na documentação que o histórico de tentativas e o progresso são compartilhados entre visitantes.
+- Evita aplicar `no-store` à página estática; respostas das APIs continuam sem cache.
+
 ## Conectividade por missão — 2026-11-13
 - IPs simulados dos PCs agora seguem a VLAN principal da missão, e os terminais resolvem endereços da topologia atual.
 - Avaliação e conectividade conferem Gi0/1 dos dois switches; soluções VLAN agora configuram os endpoints PC1 e PC2 explicitamente.

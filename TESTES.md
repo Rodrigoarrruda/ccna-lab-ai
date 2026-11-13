@@ -52,10 +52,12 @@ end
 
 ## 4. Hostinger e segurança (manual)
 
-- Confirmar `APP_PASSWORD` incorreta bloqueando aplicação e API.
+- Confirmar acesso público à página principal e às rotas `/robots.txt`, `/sitemap.xml` e `/llms.txt`.
+- Confirmar que `POST` com origem de outro domínio recebe HTTP 403.
 - Salvar tentativa, recarregar página e verificar histórico no MySQL.
 - Confirmar que `.env` e credenciais não estão presentes no pacote publicado.
 - Confirmar acesso via HTTPS e execução do comando `npm run build` (`next build --webpack`).
+- O histórico de tentativas e o progresso de estudo são compartilhados entre visitantes; não inserir dados pessoais.
 
 ## 5. Limites dos testes
 
