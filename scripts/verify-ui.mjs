@@ -1,30 +1,36 @@
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
-import {randomBytes} from 'node:crypto';
 import {mkdir} from 'node:fs/promises';
 import {chromium} from 'playwright';
 import {labs,initial,run,grade} from '../lib/labs.ts';
 import {advancedExamQuestions} from '../lib/exam-advanced.ts';
 
-// Test-only credentials generated per run. Never use or print production credentials.
-const password=randomBytes(24).toString('hex');
 const port=3217;
 const baseURL=`http://127.0.0.1:${port}`;
-const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p',String(port)],{env:{...process.env,APP_PASSWORD:password},stdio:['ignore','pipe','pipe']});
+const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p',String(port)],{env:{...process.env},stdio:['ignore','pipe','pipe']});
 let serverLogs='';server.stdout.on('data',chunk=>serverLogs+=chunk);server.stderr.on('data',chunk=>serverLogs+=chunk);
 let browser;
 try{
   let ready=false;
   for(let attempt=0;attempt<100;attempt++){
-    try{const response=await fetch(baseURL,{headers:{authorization:'Basic '+Buffer.from('rodrigo:'+password).toString('base64')}});if(response.ok){ready=true;break;}}catch{}
+    try{const response=await fetch(baseURL);if(response.ok){ready=true;break;}}catch{}
     if(server.exitCode!==null)throw Error('Test server exited');
     await new Promise(resolve=>setTimeout(resolve,300));
   }
   assert(ready,'Test server failed to start');
+  for(const [path,expected] of [
+    ['/robots.txt','Disallow: /api/'],
+    ['/sitemap.xml','<loc>https://olive-fox-987195.hostingersite.com</loc>'],
+    ['/llms.txt','# CCNA Lab AI'],
+  ]){
+    const response=await fetch(`${baseURL}${path}`);
+    assert.equal(response.status,200,`${path} should be publicly available`);
+    assert((await response.text()).includes(expected),`${path} should contain its discovery content`);
+  }
   await mkdir('ui-artifacts',{recursive:true});
   browser=await chromium.launch({headless:true});
   for(const [name,viewport] of [['mobile',{width:390,height:844}],['desktop',{width:1365,height:900}]]){
-    const context=await browser.newContext({viewport,hasTouch:name==='mobile',httpCredentials:{username:'rodrigo',password}});
+    const context=await browser.newContext({viewport,hasTouch:name==='mobile'});
     const page=await context.newPage();const view=async(label)=>{if(name==='mobile')await page.locator('.free-view-tabs').getByRole('button',{name:label,exact:true}).click();};const selectDevice=async(id)=>{await view('Rede');await page.locator(`[data-node="${id}"]`).click();await view('Terminal');};const closeCLI=async()=>{const b=page.getByRole('button',{name:'Ocultar teclado',exact:true});if(await b.count())await b.click();};const freeLog=async()=>{await view('Terminal');return page.getByRole('log',{name:'Terminal do laboratório livre'}).innerText();};const errors=[];page.on('pageerror',error=>errors.push(error.message));
     // Deterministic API fixtures test view behavior; they do not certify production DB access.
     const history=[];

@@ -20,18 +20,18 @@ Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2,
 3. Configure as variáveis de ambiente **no painel da hospedagem**, nunca no ZIP ou no código publicado. Use `.env.example` apenas como lista de nomes.
 4. Execute `npm test` e `npm run build` (que utiliza `next build --webpack`).
 5. Inicie com `npm start`; mantenha a porta `PORT` gerenciada pela Hostinger e HTTPS habilitado.
-6. Confirme autenticação, banco MySQL, persistência e funcionamento do tutor e da CLI.
+6. Confirme o acesso público, o banco MySQL, a persistência e o funcionamento do tutor e da CLI.
+7. Verifique `/robots.txt`, `/sitemap.xml` e `/llms.txt` após a publicação; remova do hPanel a variável `APP_PASSWORD`, que não é mais usada.
 
 ### Variáveis de ambiente
 
 | Nome | Finalidade |
 |---|---|
-| `APP_PASSWORD` | Senha de acesso exclusiva, preferencialmente com 16+ caracteres |
 | `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD` | Conexão com banco MySQL |
 | `OPENAI_API_KEY` | Opcional; habilita tutor IA quando disponível |
 | `OPENAI_MODEL` | Modelo do tutor; exemplo em `.env.example` |
 
-Sem chave OpenAI, o tutor deve responder com fallback local identificado. As credenciais permanecem exclusivamente no servidor. As tabelas MySQL são criadas no primeiro acesso conforme implementação atual. O banco D1 do projeto original **não é migrado automaticamente**.
+O site e as APIs são públicos. O histórico de tentativas e o progresso de estudo são compartilhados entre visitantes; não envie dados pessoais. Proteja as credenciais do banco e da OpenAI exclusivamente no servidor. Sem chave OpenAI, o tutor responde com fallback local identificado. As tabelas MySQL são criadas no primeiro acesso conforme implementação atual. O banco D1 do projeto original **não é migrado automaticamente**.
 
 ## Comandos de desenvolvimento
 
