@@ -52,8 +52,8 @@ Interpretação operacional dos códigos mais úteis:
 - A captura mostra o host `auth-db882.hstgr.io`, a porta `3306` e o banco `u471466248_ccna_teste`.
 - O banco está sem tabelas; isso é compatível com a inicialização automática de `attempts` e `study` no primeiro acesso da aplicação.
 - `127.0.0.1:3306` é a perspectiva local do phpMyAdmin. Para o aplicativo, use `auth-db882.hstgr.io` salvo confirmação explícita do hPanel de que o Node roda no mesmo host.
-## Orientação específica para olive-fox
-- `MYSQL_HOST` deve ser o hostname MySQL exibido no hPanel para o banco de homologação. Não use `olive-fox-987195.hostingersite.com`, o domínio público do app, como host do banco. Não substitua o valor por `localhost` sem confirmação explícita do hPanel.
+## Orientação específica para o app CCNA
+- `MYSQL_HOST` deve ser o hostname MySQL exibido no hPanel para o banco de homologação. Não use `ccnalab.com.br` nem o domínio temporário `olive-fox-987195.hostingersite.com` como host do banco. Não substitua o valor por `localhost` sem confirmação explícita do hPanel.
 - `MYSQL_DATABASE` deve ser o nome exato do banco MySQL de homologação criado e associado ao usuário configurado. Se o painel mostrar `ccna_teste`, use `ccna_teste`; se mostrar `ccna_lab`, use `ccna_lab`. Não escolha pelo nome da URL.
 - `MYSQL_USER` deve ser o usuário MySQL associado a esse mesmo banco, com permissão de criação, leitura e gravação.
 - `MYSQL_PORT` deve ser `3306`, salvo se o hPanel informar outra porta.

@@ -3,5 +3,5 @@ Allow: /
 Disallow: /api/
 
 Content-Signal: search=yes, ai-train=no
-Sitemap: https://olive-fox-987195.hostingersite.com/sitemap.xml
-Host: https://olive-fox-987195.hostingersite.com
+Sitemap: https://ccnalab.com.br/sitemap.xml
+Host: https://ccnalab.com.br

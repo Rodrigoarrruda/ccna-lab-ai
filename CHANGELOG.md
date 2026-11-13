@@ -15,6 +15,10 @@
 
 # Histórico de versões — CCNA Lab AI
 
+## Domínio próprio — 2026-11-13
+- Conecta `ccnalab.com.br` à aplicação Next.js já existente na Hostinger.
+- Atualiza sitemap, `robots.txt`, `llms.txt` e a representação Markdown para usar o domínio canônico próprio.
+
 ## Sinais de descoberta para buscadores e IA — 2026-11-13
 - Substitui a rota dinâmica de robôs por `public/robots.txt`, permitindo rastreamento geral, excluindo `/api/` e declarando o sitemap e `Content-Signal: search=yes, ai-train=no`.
 - Inclui `lastmod` no sitemap e links entre a home, o sitemap, `robots.txt` e `llms.txt`.

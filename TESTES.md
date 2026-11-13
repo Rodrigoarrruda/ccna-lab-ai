@@ -53,6 +53,7 @@ end
 ## 4. Hostinger e segurança (manual)
 
 - Confirmar acesso público à página principal e às rotas `/robots.txt`, `/sitemap.xml` e `/llms.txt`.
+- Confirmar que essas rotas usam `https://ccnalab.com.br` como domínio canônico e não apontam para o domínio temporário.
 - Confirmar que `POST` com origem de outro domínio recebe HTTP 403.
 - Salvar tentativa, recarregar página e verificar histórico no MySQL.
 - Confirmar que `.env` e credenciais não estão presentes no pacote publicado.
