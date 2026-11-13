@@ -13,7 +13,7 @@ Manter a produção existente intocada enquanto validamos releases da branch de 
 - Conservar versão atualmente publicada e cópia de segurança para rollback.
 
 ## Build
-Versões exigidas: Node >=22.13.0 e Next.js 16.3.8.
+Versões exigidas: Node >=22.13.0 e Next.js 16.4.6.
 ```sh
 npm ci
 npm test
