@@ -159,11 +159,14 @@ try{
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
     await page.locator('nav').getByRole('button',{name:'Início'}).click();
     await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.locator('[data-node="PC3"]').waitFor();
     assert.equal(await page.locator('[data-node]').count(),3);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.locator('[data-node="PC3"]').waitFor();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('[data-cable]').count(),2);
     await page.evaluate(()=>{localStorage.removeItem('ccna-free-network-v1');localStorage.removeItem('ccna-free-workspace-v1');});
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.getByText('Salvamento automático ativo neste navegador.',{exact:true}).waitFor();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ Roteador',exact:true}).click();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ PC',exact:true}).click();
     await cable('PC3','eth0','R1','gi0/0');await cable('R1','gi0/1','R2','gi0/1');await cable('R2','gi0/0','PC4','eth0');
