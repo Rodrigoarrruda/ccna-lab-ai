@@ -19,5 +19,6 @@ Este é um simulador educacional por regras. Não executa Cisco IOS, não transm
 
 ## Endereço
 
-- Página principal: https://olive-fox-987195.hostingersite.com/
-- Mapa do site: https://olive-fox-987195.hostingersite.com/sitemap.xml
+- [Página principal](https://olive-fox-987195.hostingersite.com/)
+- [Mapa do site](https://olive-fox-987195.hostingersite.com/sitemap.xml)
+- [Política para robôs](https://olive-fox-987195.hostingersite.com/robots.txt)

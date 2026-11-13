@@ -1,8 +1,39 @@
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/site-discovery";
 import "./globals.css";
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "CCNA Lab AI",
+      url: siteUrl,
+      inLanguage: "pt-BR",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "CCNA Lab AI",
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Web",
+      url: siteUrl,
+      inLanguage: "pt-BR",
+      isAccessibleForFree: true,
+      description:
+        "Laboratório educacional para praticar conceitos do CCNA 200-301 com topologia visual, CLI Cisco simulada e questões comentadas.",
+      featureList: [
+        "Laboratórios guiados de configuração Cisco",
+        "Topologia de rede interativa",
+        "Prática de CLI Cisco simulada",
+        "Questões de estudo para CCNA 200-301",
+        "Tutor contextual em português",
+      ],
+    },
+  ],
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://olive-fox-987195.hostingersite.com"),
+  metadataBase: new URL(siteUrl),
   title: "CCNA Lab AI | Laboratório interativo CCNA",
   description:
     "Pratique CCNA 200-301 em laboratórios interativos de CLI Cisco, topologias de rede, questões comentadas e tutor contextual em português.",
@@ -20,7 +51,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: "https://olive-fox-987195.hostingersite.com/",
+    url: `${siteUrl}/`,
     siteName: "CCNA Lab AI",
     locale: "pt_BR",
     title: "CCNA Lab AI | Laboratório interativo CCNA",
@@ -57,7 +88,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

@@ -22,6 +22,7 @@ Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2,
 5. Inicie com `npm start`; mantenha a porta `PORT` gerenciada pela Hostinger e HTTPS habilitado.
 6. Confirme o acesso público, o banco MySQL, a persistência e o funcionamento do tutor e da CLI.
 7. Verifique `/robots.txt`, `/sitemap.xml` e `/llms.txt` após a publicação; remova do hPanel a variável `APP_PASSWORD`, que não é mais usada.
+8. A página inicial também aceita `Accept: text/markdown`; os robôs podem rastrear páginas públicas, mas `/api/` é excluído. `robots.txt` sinaliza `search=yes, ai-train=no` — uma solicitação a crawlers, não um controle técnico de treinamento.
 
 ### Variáveis de ambiente
 
