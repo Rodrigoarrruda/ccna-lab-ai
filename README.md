@@ -24,6 +24,8 @@ Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2,
 7. Verifique `/robots.txt`, `/sitemap.xml` e `/llms.txt` após a publicação; remova do hPanel a variável `APP_PASSWORD`, que não é mais usada.
 8. A página inicial também aceita `Accept: text/markdown`; os robôs podem rastrear páginas públicas, mas `/api/` é excluído. `robots.txt` sinaliza `search=yes, ai-train=no` — uma solicitação a crawlers, não um controle técnico de treinamento.
 
+O domínio público conectado à aplicação é [ccnalab.com.br](https://ccnalab.com.br). As URLs canônicas de `robots.txt`, sitemap, `llms.txt` e da representação Markdown devem usar esse domínio.
+
 ### Variáveis de ambiente
 
 | Nome | Finalidade |

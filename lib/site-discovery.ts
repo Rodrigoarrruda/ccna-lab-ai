@@ -1,4 +1,4 @@
-export const siteUrl = "https://olive-fox-987195.hostingersite.com";
+export const siteUrl = "https://ccnalab.com.br";
 
 export const homepageMarkdown = `# CCNA Lab AI
 
