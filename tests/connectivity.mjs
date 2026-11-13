@@ -1,14 +1,33 @@
 import assert from 'node:assert/strict';
-import {initial,run} from '../lib/labs.ts';
-import {ping,macTable} from '../lib/connectivity.ts';
-let s=initial();
-assert.equal(ping(s,'PC1','PC2').ok,false);
-for(const d of ['SW1','SW2']){
- s.device=d;s.mode='user';
- for(const c of ['enable','configure terminal','vlan 10','exit','interface gi0/1','switchport access vlan 10','exit','interface gi0/24','switchport mode trunk','switchport trunk allowed vlan 10,20','end'])s=run(s,c).state;
+import {labs,initial,run,grade} from '../lib/labs.ts';
+import {ping,macTable,hostAddress,hostFromAddress} from '../lib/connectivity.ts';
+
+for(const id of ['vlan','vlan-branch','vlan-guest']){
+ const lab=labs.find(item=>item.id===id);
+ assert(lab,id);
+ let state=initial(id);
+
+ assert.equal(ping(state,'PC1','PC2').ok,false);
+ assert.equal(hostFromAddress(state,hostAddress(state,'PC2')),'PC2');
+
+ for(const device of ['SW1','SW2']){
+  state.device=device;
+  state.mode='user';
+  for(const command of lab.solution)state=run(state,command).state;
+ }
+
+ assert.equal(grade(id,state).every(check=>check.ok),true,id+' solution should pass grading');
+ assert.equal(ping(state,'PC1','PC2').ok,true,id+' PCs should communicate after the reference configuration');
+ assert.equal(macTable(state,'SW1').some(entry=>entry.host==='PC2'),true,id+' should learn the remote PC');
+ assert.equal(hostFromAddress(state,'192.168.255.99'),null);
+
+ const vlan=state.devices.SW1.ports['gi0/1'].vlan;
+ state.devices.SW2.ports['gi0/24'].allowed=[vlan===4094?1:4094];
+ assert.equal(ping(state,'PC1','PC2').ok,false,id+' should fail when the trunk blocks its host VLAN');
+
+ state.devices.SW2.ports['gi0/24'].allowed=[vlan];
+ state.devices.SW2.ports['gi0/1'].vlan=1;
+ assert.equal(ping(state,'PC1','PC2').ok,false,id+' should fail when the remote access port is in another VLAN');
 }
-assert.equal(ping(s,'PC1','PC2').ok,true);
-assert.equal(macTable(s,'SW1').some(e=>e.host==='PC2'),true);
-s.device='SW2';s.mode='exec';for(const c of ['configure terminal','interface gi0/24','switchport trunk allowed vlan 20'])s=run(s,c).state;
-assert.equal(ping(s,'PC1','PC2').ok,false);
-console.log('Connectivity L2 tests passed');
+
+console.log('PASS: connectivity follows mission host VLANs, endpoints, and trunk state.');

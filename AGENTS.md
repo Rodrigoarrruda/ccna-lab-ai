@@ -4,7 +4,7 @@
 Build a deterministic, pedagogically accurate Cisco CCNA 200-301 lab simulator. Preserve working behavior, avoid regressions, and never claim production readiness without evidence.
 
 ## Non-negotiable constraints
-- Keep Next.js pinned to 16.3.8 unless a separately approved migration is planned.
+- Keep Next.js pinned to the exact approved version; security updates may move the pin to a patched release.
 - Preserve `next.config.mjs` and `next build --webpack`.
 - Keep assessment deterministic. LLM tutor output must never alter grading.
 - Provide explicit, labelled local fallback when OpenAI is unavailable.

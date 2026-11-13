@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {addNode,configurePC,connect,emptyNetwork,executeSwitch,freePorts,localCoach,removeNode,restoreNetwork,testPing,validHost} from '../lib/free-network.ts';
-let net=emptyNetwork();for(const kind of ['switch','switch','pc','pc'])net=addNode(net,kind);
+let net=emptyNetwork();assert.equal(net.config.labId,'');for(const kind of ['switch','switch','pc','pc'])net=addNode(net,kind);
 const link=(a,ap,b,bp)=>{net=connect(net,{node:a,port:ap},{node:b,port:bp});};
 link('PC3','eth0','SW1','gi0/1');link('PC4','eth0','SW2','gi0/1');link('SW1','gi0/24','SW2','gi0/24');
 assert.equal(testPing(net,'PC3','PC4').ok,false);

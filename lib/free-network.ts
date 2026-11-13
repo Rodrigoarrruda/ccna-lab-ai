@@ -6,7 +6,7 @@ export type NetworkNode={id:string,kind:'switch'|'pc'|'router',x:number,y:number
 export type Endpoint={node:string,port:string};
 export type Cable={id:string,a:Endpoint,b:Endpoint};
 export type FreeNetwork={version:1,nodes:NetworkNode[],cables:Cable[],config:State,routers?:Record<string,Router>,serial:number};
-export const emptyNetwork=():FreeNetwork=>({version:1,nodes:[],cables:[],config:{devices:{},device:'',mode:'user',target:''},serial:0});
+export const emptyNetwork=():FreeNetwork=>({version:1,nodes:[],cables:[],config:{labId:'',devices:{},device:'',mode:'user',target:''},serial:0});
 export function ports(node:NetworkNode){return node.kind==='pc'?['eth0']:node.kind==='router'?routerPorts:switchPorts;}
 export function freePorts(network:FreeNetwork,id:string){const node=network.nodes.find(n=>n.id===id);return node?ports(node).filter(port=>!network.cables.some(c=>[c.a,c.b].some(e=>e.node===id&&e.port===port))):[];}
 export function addNode(network:FreeNetwork,kind:NetworkNode['kind'],x=100,y=100):FreeNetwork{
@@ -85,4 +85,3 @@ export function restoreNetwork(raw:string):FreeNetwork{
  const prefixes=new Set<string>();for(const t of r.routes){if(!t||typeof t.network!=='string'||!((t.mask==='255.255.255.0'&&t.network===subnet(t.network)&&validHost(t.network.replace(/\.0$/,'.1')))||(t.mask==='0.0.0.0'&&t.network==='0.0.0.0'))||!validHost(t.nextHop)||Object.values(r.interfaces).some(i=>i.ip===t.nextHop)||prefixes.has(t.network))throw Error('Rota estática salva inválida.');prefixes.add(t.network);}rebuilt.routers[n.id]=structuredClone(r);}
  rebuilt.serial=value.serial;rebuilt.config.device=rebuilt.nodes.find(n=>n.kind==='switch')?.id??'';return rebuilt;
 }
-

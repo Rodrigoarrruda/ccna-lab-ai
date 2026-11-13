@@ -149,7 +149,7 @@ try{
     for(const command of ['configure terminal','interface gi0/24','shutdown','end']){await view('Terminal');await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');await closeCLI();}
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
-    assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
+    await page.locator('[data-node="PC4"]').waitFor();assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
     assert.match(await freeLog(),/shutdown/);
     await view('Tutor');await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
@@ -159,11 +159,14 @@ try{
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('.free-cables li').count(),2);
     await page.locator('nav').getByRole('button',{name:'Início'}).click();
     await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.locator('[data-node="PC3"]').waitFor();
     assert.equal(await page.locator('[data-node]').count(),3);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.locator('[data-node="PC3"]').waitFor();
     assert.equal(await page.locator('[data-node]').count(),3);assert.equal(await page.locator('[data-cable]').count(),2);
     await page.evaluate(()=>{localStorage.removeItem('ccna-free-network-v1');localStorage.removeItem('ccna-free-workspace-v1');});
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
+    await page.getByText('Salvamento automático ativo neste navegador.',{exact:true}).waitFor();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ Roteador',exact:true}).click();
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'+ PC',exact:true}).click();
     await cable('PC3','eth0','R1','gi0/0');await cable('R1','gi0/1','R2','gi0/1');await cable('R2','gi0/0','PC4','eth0');
@@ -216,4 +219,3 @@ try{
   }
 }catch(error){console.error(serverLogs);throw error;}
 finally{await browser?.close();server.kill('SIGTERM');}
-
