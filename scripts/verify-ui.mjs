@@ -149,7 +149,7 @@ try{
     for(const command of ['configure terminal','interface gi0/24','shutdown','end']){await view('Terminal');await page.locator('#free-cli').fill(command);await page.locator('#free-cli').press('Enter');await closeCLI();}
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
     await page.reload();await page.locator('nav').getByRole('button',{name:'Laboratório livre'}).click();
-    assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
+    await page.locator('[data-node="PC4"]').waitFor();assert.equal(await page.locator('[data-node]').count(),4);assert.equal(await page.locator('.free-cables li').count(),3);
     assert.match(await freeLog(),/shutdown/);
     await view('Tutor');await page.getByLabel('PC de origem').selectOption('PC3');await page.getByLabel('PC de destino').selectOption('PC4');await page.getByRole('button',{name:'Testar ping',exact:true}).click();
     assert.match(await page.locator('.free-coach').innerText(),/Investigue a causa/);
@@ -216,4 +216,3 @@ try{
   }
 }catch(error){console.error(serverLogs);throw error;}
 finally{await browser?.close();server.kill('SIGTERM');}
-
