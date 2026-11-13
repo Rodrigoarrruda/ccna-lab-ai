@@ -1,6 +1,6 @@
 # CCNA Lab AI — Cisco L2.1
 
-Aplicação educacional Next.js 16.3.8 para prática de configuração Cisco L2, com topologia interativa, console por switch, tutor contextual e avaliação determinística.
+Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2, com topologia interativa, console por switch, tutor contextual e avaliação determinística.
 
 ## Funcionalidades
 
@@ -55,7 +55,7 @@ Consulte [TESTES.md](TESTES.md) para roteiro completo e [CHANGELOG.md](CHANGELOG
 
 ## Compatibilidade e ressalva de homologação
 
-`next.config.mjs` foi preservado, a dependência Next.js está fixada em `16.3.8` e o script de build usa `next build --webpack`. A documentação não comprova homologação em produção: execute o build no ambiente de destino antes de publicar.
+`next.config.mjs` foi preservado, a dependência Next.js está fixada em `16.4.6` e o script de build usa `next build --webpack`. A documentação não comprova homologação em produção: execute o build no ambiente de destino antes de publicar.
 
 ## Terminais dos PCs (Cisco L2.2)
 Na topologia, selecione PC1 ou PC2. Comandos disponíveis: ipconfig, ping PC1, ping PC2, ping 192.168.10.11, ping 192.168.10.12 e help. IPs fixos. Simulação por regras, sem pacotes reais. Comandos de PC não afetam a nota.

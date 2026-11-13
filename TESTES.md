@@ -12,6 +12,8 @@ npm run build
 
 **Aceite:** todos os testes passam e o build Next.js termina sem erros de TypeScript. Avisos de fallback SWC/WASM, por si só, não equivalem a falha; avalie o código de saída do processo.
 
+O teste `tests/request-body.mjs` também verifica o limite de 60.000 bytes das APIs, incluindo corpos sem `Content-Length` e caracteres multibyte.
+
 ## 2. CLI e topologia (manual)
 
 - Selecionar SW1 e SW2 individualmente; confirmar que o prompt acompanha o dispositivo e o modo.

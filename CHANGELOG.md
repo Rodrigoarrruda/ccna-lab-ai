@@ -1,5 +1,9 @@
 # Histórico de versões — CCNA Lab AI
 
+## Segurança de dependências — 2026-11-13
+- Atualizado Next.js de 16.3.8 para 16.4.6 para corrigir vulnerabilidades reportadas pelo npm audit.
+- Limitada a leitura dos corpos das APIs por bytes, inclusive quando `Content-Length` está ausente, e separados erros de entrada inválida de falhas de persistência.
+
 ## Cisco L2.1 — 2026-10-09
 - Conectividade simulada PC1 ↔ PC2, condicionada a portas access, VLANs existentes e trunk com VLAN permitida nas duas pontas.
 - Comandos de ping simulado e tabela MAC calculada a partir da topologia.
