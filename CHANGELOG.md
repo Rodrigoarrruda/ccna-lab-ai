@@ -15,6 +15,12 @@
 
 # Histórico de versões — CCNA Lab AI
 
+## Sinais de descoberta para buscadores e IA — 2026-11-13
+- Substitui a rota dinâmica de robôs por `public/robots.txt`, permitindo rastreamento geral, excluindo `/api/` e declarando o sitemap e `Content-Signal: search=yes, ai-train=no`.
+- Inclui `lastmod` no sitemap e links entre a home, o sitemap, `robots.txt` e `llms.txt`.
+- Oferece uma representação Markdown da página inicial a clientes que enviam `Accept: text/markdown` e anuncia `llms.txt` pelo cabeçalho `Link`.
+- Adiciona dados estruturados `WebSite` e `SoftwareApplication` sem inventar entidade, contatos ou perfis externos.
+
 ## Acesso público e descoberta — 2026-11-13
 - Torna a página e as APIs acessíveis sem senha, preservando validação de origem em operações `POST` e cabeçalhos de segurança.
 - Adiciona metadados para buscadores e compartilhamento, `robots.txt`, sitemap e `llms.txt`.

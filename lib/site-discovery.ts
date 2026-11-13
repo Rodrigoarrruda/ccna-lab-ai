@@ -1,0 +1,28 @@
+export const siteUrl = "https://olive-fox-987195.hostingersite.com";
+
+export const homepageMarkdown = `# CCNA Lab AI
+
+> Laboratório educacional interativo em português para praticar conceitos do exame CCNA 200-301.
+
+## Sobre
+
+O CCNA Lab AI oferece laboratórios guiados de configuração Cisco, uma topologia visual, prática de CLI simulada, questões de estudo comentadas e um tutor contextual.
+
+## Recursos
+
+- Prática de VLANs, portas access e trunk, EtherChannel e conectividade simulada.
+- Laboratório livre para montar topologias com switches, PCs e roteadores.
+- Questões de estudo sobre os domínios do CCNA 200-301.
+- Tutor em português com respostas locais e opção de integração com IA.
+
+## Limites
+
+Este é um simulador educacional por regras. Não executa Cisco IOS, não transmite pacotes reais e não substitui equipamentos físicos nem o Cisco Packet Tracer.
+
+## Links
+
+- [Página principal](${siteUrl}/)
+- [Mapa do site](${siteUrl}/sitemap.xml)
+- [Resumo para sistemas de IA](${siteUrl}/llms.txt)
+- [Política para robôs](${siteUrl}/robots.txt)
+`;

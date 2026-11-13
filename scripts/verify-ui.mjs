@@ -20,13 +20,18 @@ try{
   assert(ready,'Test server failed to start');
   for(const [path,expected] of [
     ['/robots.txt','Disallow: /api/'],
-    ['/sitemap.xml','<loc>https://olive-fox-987195.hostingersite.com</loc>'],
+    ['/sitemap.xml','<lastmod>'],
     ['/llms.txt','# CCNA Lab AI'],
   ]){
     const response=await fetch(`${baseURL}${path}`);
     assert.equal(response.status,200,`${path} should be publicly available`);
     assert((await response.text()).includes(expected),`${path} should contain its discovery content`);
   }
+  const markdownResponse=await fetch(baseURL,{headers:{accept:'text/markdown'}});
+  assert.equal(markdownResponse.status,200,'Markdown homepage should be available for agents');
+  assert.match(markdownResponse.headers.get('content-type')??'',/text\/markdown/);
+  assert.match(markdownResponse.headers.get('link')??'',/\/llms\.txt/);
+  assert.match(await markdownResponse.text(),/^# CCNA Lab AI/m);
   await mkdir('ui-artifacts',{recursive:true});
   browser=await chromium.launch({headless:true});
   for(const [name,viewport] of [['mobile',{width:390,height:844}],['desktop',{width:1365,height:900}]]){
@@ -44,6 +49,9 @@ try{
     });
     await page.route('**/api/tutor',route=>route.fulfill({json:{mode:'local'}}));
     await page.goto(baseURL);
+    const structuredData=await page.locator('script[type="application/ld+json"]').textContent();
+    assert.match(structuredData??'',/"@type":"WebSite"/);
+    assert.match(structuredData??'',/"@type":"SoftwareApplication"/);
     await page.locator('nav').getByRole('button',{name:'Questões CCNA'}).click();
     await page.waitForSelector('#exam-mode');
     assert.equal(await page.locator('#exam-mode').inputValue(),'advanced');

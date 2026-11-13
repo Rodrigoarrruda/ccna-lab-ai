@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = "https://olive-fox-987195.hostingersite.com";
+import { siteUrl } from "../lib/site-discovery.ts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
+      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
