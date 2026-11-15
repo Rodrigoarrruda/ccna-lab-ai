@@ -1,21 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isSitePasswordConfigured, isSiteSessionValid, SITE_AUTH_COOKIE } from './lib/site-auth';
 import { homepageMarkdown, siteUrl } from './lib/site-discovery';
 
+function secureResponse(response: NextResponse): NextResponse {
+  response.headers.set('Cache-Control', 'private, no-store');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'same-origin');
+  response.headers.set('X-Frame-Options', 'DENY');
+  return response;
+}
+
 export function proxy(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
+  const isPublicAuthRoute =
+    pathname === '/login' ||
+    pathname === '/api/auth/login' ||
+    pathname === '/api/auth/logout';
+  const hasValidSession = isSiteSessionValid(
+    req.cookies.get(SITE_AUTH_COOKIE)?.value,
+    process.env.APP_PASSWORD,
+  );
+
+  if (!isPublicAuthRoute && pathname !== '/robots.txt' && !hasValidSession) {
+    if (pathname.startsWith('/api/')) {
+      return secureResponse(
+        NextResponse.json({ error: 'Acesso não autorizado.' }, { status: 401 }),
+      );
+    }
+    const loginUrl = req.nextUrl.clone();
+    loginUrl.pathname = '/login';
+    loginUrl.search = isSitePasswordConfigured(process.env.APP_PASSWORD) ? '' : '?setup=1';
+    return secureResponse(NextResponse.redirect(loginUrl));
+  }
+
+  if (pathname === '/login' && hasValidSession) {
+    return secureResponse(NextResponse.redirect(new URL('/', req.url)));
+  }
+
   if (
     req.method === 'GET' &&
-    req.nextUrl.pathname === '/' &&
+    pathname === '/' &&
     req.headers.get('accept')?.includes('text/markdown')
   ) {
-    return new NextResponse(homepageMarkdown, {
-      headers: {
-        'Content-Type': 'text/markdown; charset=utf-8',
-        Link: `<${siteUrl}/llms.txt>; rel="alternate"; type="text/plain"`,
-        'X-Content-Type-Options': 'nosniff',
-        'Referrer-Policy': 'same-origin',
-        'X-Frame-Options': 'DENY',
-      },
-    });
+    const response = secureResponse(
+      new NextResponse(homepageMarkdown, {
+        headers: {
+          'Content-Type': 'text/markdown; charset=utf-8',
+          Link: `<${siteUrl}/llms.txt>; rel="alternate"; type="text/plain"`,
+        },
+      }),
+    );
+    return response;
   }
 
   if (req.method === 'POST') {
@@ -25,28 +60,22 @@ export function proxy(req: NextRequest) {
       try {
         originHost = new URL(origin).host;
       } catch {
-        return new NextResponse('Origem inválida.', { status: 403 });
+        return secureResponse(new NextResponse('Origem inválida.', { status: 403 }));
       }
 
       if (originHost !== req.headers.get('host')) {
-        return new NextResponse('Origem inválida.', { status: 403 });
+        return secureResponse(new NextResponse('Origem inválida.', { status: 403 }));
       }
     }
   }
 
-  const res = NextResponse.next();
-  if (req.nextUrl.pathname.startsWith('/api/')) {
-    res.headers.set('Cache-Control', 'private, no-store');
-  }
-  if (req.nextUrl.pathname === '/') {
+  const res = secureResponse(NextResponse.next());
+  if (pathname === '/' && hasValidSession) {
     res.headers.set(
       'Link',
       `<${siteUrl}/llms.txt>; rel="alternate"; type="text/plain"`,
     );
   }
-  res.headers.set('X-Content-Type-Options', 'nosniff');
-  res.headers.set('Referrer-Policy', 'same-origin');
-  res.headers.set('X-Frame-Options', 'DENY');
   return res;
 }
 

@@ -7,10 +7,9 @@ const siteUrl = "https://ccnalab.com.br";
 const robotText = await readFile(new URL("../public/robots.txt", import.meta.url), "utf8");
 const llmsText = await readFile(new URL("../public/llms.txt", import.meta.url), "utf8");
 assert.match(robotText, /User-agent: \*/);
-assert.match(robotText, /Allow: \//);
-assert.match(robotText, /Disallow: \/api\//);
-assert.match(robotText, /Content-Signal: search=yes, ai-train=no/);
-assert.match(robotText, new RegExp(`Sitemap: ${siteUrl}/sitemap\\.xml`));
+assert.match(robotText, /Disallow: \//);
+assert.doesNotMatch(robotText, /Allow: \//);
+assert.doesNotMatch(robotText, /Sitemap:/);
 assert.match(llmsText, new RegExp(`\\[Página principal\\]\\(${siteUrl}/\\)`));
 assert.match(llmsText, new RegExp(`\\[Mapa do site\\]\\(${siteUrl}/sitemap\\.xml\\)`));
 assert.doesNotMatch(llmsText, /olive-fox-987195\.hostingersite\.com/);
@@ -26,4 +25,4 @@ assert.deepEqual(siteMap, [
 ]);
 assert(siteMap[0].lastModified instanceof Date);
 
-console.log("Public access and discovery metadata checks passed.");
+console.log("Private access and discovery metadata checks passed.");

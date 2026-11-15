@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/site-discovery";
+import LogoutButton from "./LogoutButton";
 import "./globals.css";
 
 const structuredData = {
@@ -65,15 +66,8 @@ export const metadata: Metadata = {
       "Laboratórios interativos de redes Cisco para praticar os fundamentos do CCNA 200-301.",
   },
   robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+    index: false,
+    follow: false,
   },
   icons: {
     icon: "/favicon.svg",
@@ -96,6 +90,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <LogoutButton />
       </body>
     </html>
   );
