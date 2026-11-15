@@ -264,3 +264,144 @@ body:has(.network-visual){background:#0b1017;color:#dce5ef}
  .shell:has(.network-visual) .mission-header p{font-size:12px}
  .shell:has(.network-visual) .mission-metrics{display:grid;grid-template-columns:1fr}
 }
+
+/* Shared Figma workspace theme across every destination */
+:root{color-scheme:dark;--workspace-bg:#0b1017;--workspace-panel:#111922;--workspace-panel-raised:#151f29;--workspace-border:#293541;--workspace-text:#dce5ef;--workspace-muted:#9eabb9;--workspace-accent:#53dfc7}
+body{background:var(--workspace-bg);color:var(--workspace-text)}
+.shell aside{background:#0d141d;color:#bdc9d6;border-right:1px solid #252f3a;box-shadow:none}
+.shell .brand{color:#f2f6fa}
+.shell .edition,.shell aside footer,.shell .path small{color:#8e9cab}
+.shell .path{border-color:#252f3a}
+.shell .path strong{color:#edf3f8}
+.shell .path p{color:#aab6c4}
+.shell .pill{background:#151f29;color:#aebbc9}
+.shell main{color:var(--workspace-text)}
+.shell main>header{border-color:#252f3a}
+.shell main>header h1,.shell main h2,.shell main h3,.shell main h4{color:#f2f6fa}
+.shell main>header>div>small,.shell main small{color:#8e9cab}
+.shell .tag{border-color:#303b48;background:#111922;color:#aeb9c7}
+.shell nav button{color:#aebbc9}
+.shell nav button:hover{background:#151f29;color:#f2f6fa}
+.shell nav button.selected{background:#153b43;color:#78e1d0;box-shadow:inset 3px 0 var(--workspace-accent)}
+.shell nav button span{color:inherit}
+.shell main:not(:has(.network-visual)) .panel,
+.shell main:not(:has(.network-visual)) .brief,
+.shell main:not(:has(.network-visual)) .feedback,
+.shell main:not(:has(.network-visual)) .home-copy,
+.shell main:not(:has(.network-visual)) .home-status,
+.shell main:not(:has(.network-visual)) .study-module,
+.shell main:not(:has(.network-visual)) .exam-coach{
+ background:var(--workspace-panel);border:1px solid var(--workspace-border);color:var(--workspace-text);box-shadow:none
+}
+.shell .sectionlabel,.shell .mission-kicker,.shell .exam-question>small{color:#70dfce}
+.shell .home-copy{background:linear-gradient(135deg,#111922,#10242a)!important}
+.shell .home-copy h2{color:#f2f6fa}
+.shell .home-copy p,.shell .home-benefits p,.shell .home-status>span{color:#aab6c4}
+.shell .home-status{background:#111922!important}
+.shell .home-status small,.shell .home-status-line{color:#70dfce}
+.shell .home-card,.shell .home-benefits article,.shell .domain-card,.shell .study-unit,
+.shell .studylist label,.shell .exam-question,.shell .exam-score,.shell .exam-finished,
+.shell .archgrid article,.shell .checkgrid>div,.shell .empty,.shell .status{
+ background:var(--workspace-panel);border:1px solid var(--workspace-border);color:var(--workspace-text);box-shadow:none
+}
+.shell .home-card:hover,.shell .studylist label:hover,.shell .studylist label.is-done,
+.shell .domain-card:hover{border-color:#3a776f;background:#142329}
+.shell .home-card strong,.shell .domain-card h3,.shell .studylist label strong,
+.shell .exam-question h3,.shell .exam-feedback strong,.shell .exam-finished h3{color:#edf3f8}
+.shell .home-card small,.shell .home-card em,.shell .home-benefits article>span,
+.shell .domain-card p,.shell .studylist label small,.shell .studylist label em,
+.shell .study-hero p,.shell .exam-intro p,.shell .exam-actions>span,
+.shell .exam-finished p,.shell .archgrid p,.shell .checkgrid p{color:#aab6c4}
+.shell .home-heading h2,.shell .study-package-heading h2{color:#f2f6fa}
+.shell .home-heading small,.shell .study-package-heading>span,.shell .domain-card span{color:#70dfce}
+.shell .exam-intro,.shell .study-hero{background:linear-gradient(135deg,#111922,#10242a);border:1px solid var(--workspace-border)}
+.shell .exam-intro h2,.shell .study-hero h2{color:#f2f6fa}
+.shell .exam-score{background:#151f29}
+.shell .exam-score strong,.shell .study-progress strong{color:#70dfce}
+.shell .exam-score span,.shell .study-progress small{color:#aab6c4}
+.shell .exam-meta span{background:#1a2934;color:#c1ceda}
+.shell .exam-option{background:#151f29;border-color:#344250;color:#dce5ef}
+.shell .exam-option:hover,.shell .exam-option.selected{background:#153b43;border-color:#53b6a8;color:#effffb}
+.shell .exam-option.correct{background:#143426;border-color:#3e9b71;color:#a9edca}
+.shell .exam-option.wrong{background:#3a2024;border-color:#b86b70;color:#ffc4c7}
+.shell .exam-feedback,.shell .exam-feedback.is-correct{background:#1e242a;color:#c5cfda}
+.shell .exam-feedback.is-correct{border-left-color:#3e9b71}
+.shell .study-progress,.shell .domain-card.planned{background:#151f29;border-color:#293541;color:#dce5ef}
+.shell .studylist label em{color:#e2b27d}
+.shell .studylist label i,.shell .pass{color:#70dfce}
+.shell .study-module-heading>span{background:#153b43;color:#78e1d0}
+.shell .study-module{background:#111922;border-color:#293541}
+.shell .study-module h3,.shell .study-columns h4,.shell .study-check h4{color:#dce5ef}
+.shell .study-columns p,.shell .study-columns li{color:#bdc9d6}
+.shell .study-columns pre{background:#0b1017;color:#c5f5e9}
+.shell .study-check{border-color:#293541}
+.shell .study-check-option{background:#151f29;border-color:#344250;color:#dce5ef}
+.shell .study-check-option.selected{background:#153b43;border-color:#53b6a8}
+.shell .study-check-option.correct{background:#143426;border-color:#3e9b71;color:#a9edca}
+.shell .study-check-option.wrong{background:#3a2024;border-color:#b86b70;color:#ffc4c7}
+.shell .notice,.shell .free-save-status{color:var(--workspace-muted)!important}
+.shell .primary{background:var(--workspace-accent);color:#09221f;border-radius:8px}
+.shell .subtle{color:#78e1d0}
+.shell .free-toolbar button,.shell .free-cables button,.shell .free-viewport-tools button,
+.shell .free-view-tabs button,.shell .free-selection button,.shell .free-select-placeholder button{
+ background:#151f29;border:1px solid #344250;color:#dce5ef
+}
+.shell .free-toolbar button:hover,.shell .free-viewport-tools button:hover,
+.shell .free-view-tabs button:hover,.shell .free-selection button:hover{border-color:#53b6a8;background:#153b43}
+.shell .free-toolbar button:disabled,.shell .free-selection button:disabled{opacity:.5}
+.shell .free-toolbar span,.shell .free-viewport-tools output,.shell .free-selection span{color:#bdc9d6}
+.shell .free-workspace-grid{gap:14px}
+.shell .free-inspector-panel,.shell .free-selection,.shell .free-connect,
+.shell .free-tutor-panel,.shell .free-device,.shell .free-message,.shell .free-coach{
+ background:var(--workspace-panel);border:1px solid var(--workspace-border);color:var(--workspace-text)
+}
+.shell .free-inspector-panel{border-radius:14px}
+.shell .free-canvas-wrap{border-color:#344250;background-color:#0e151d;background-image:radial-gradient(#34404d 1px,transparent 1px)}
+.shell .free-canvas{background-color:#0e151d;background-image:radial-gradient(#34404d 1px,transparent 1px)}
+.shell .free-node{border-color:#526272;background:#151f29;color:#edf3f8}
+.shell .free-node.is-selected{border-color:#53dfc7;background:#153b43}
+.shell .free-node .free-node-icon{border-color:#344250;background:#0d141d;color:#75dccc}
+.shell .free-node.is-selected .free-node-icon{border-color:#53b6a8;background:#102c32;color:#8ef0dd}
+.shell .free-node small,.shell .free-command-help,.shell .free-interface-inventory li,
+.shell .free-device p,.shell .free-connect label,.shell .free-ping label{color:#aab6c4}
+.shell .free-ports text{fill:#c4d0dc}
+.shell .free-interface-inventory li{border-color:#293541}
+.shell .free-editor select,.shell .free-editor input,.shell .free-connect select,
+.shell .free-ping input,.shell .free-ping select,.shell .free-device input,
+.shell .free-device select,.shell .free-tutor-panel textarea{
+ border-color:#344250;background:#0d141d;color:#edf3f8
+}
+.shell .free-coach{background:#122c27;border-color:#286052}
+.shell .free-coach h3,.shell .free-coach strong{color:#a4ecdc}
+.shell .free-message{background:#151f29}
+.shell .free-view-tabs button[aria-pressed=true]{background:#153b43;border-color:#53b6a8;color:#effffb}
+.shell .tablewrap table th,.shell .tablewrap table td{border-color:#293541;color:#bdc9d6}
+.shell .empty{color:#bdc9d6}
+.shell .status{background:#122c27;border-color:#286052;color:#a4ecdc}
+.shell .bottom{color:#8e9cab}
+.shell input[type=checkbox]{accent-color:#53dfc7}
+.shell nav button span{
+ display:inline-block;flex:0 0 18px;width:18px;height:18px;font-size:0;
+ background:currentColor;mask-repeat:no-repeat;mask-size:contain;mask-position:center
+}
+.shell nav button:nth-child(1) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(2) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m12 2 2.8 6.2L22 11l-7.2 2.8L12 21l-2.8-7.2L2 11l7.2-2.8z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(3) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 4h16v16H4zm3 3v10h10V7zm2 2h6v6H9z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(4) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 2 7v10l10 5 10-5V7zm0 3.2L18.6 8.5 12 11.8 5.4 8.5zM5 11l6 3v4.8l-6-3zm14 0v4.8l-6 3V14z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(5) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(6) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m0 3a1.2 1.2 0 1 1-1.2 1.2A1.2 1.2 0 0 1 12 5m2 14h-4v-1.5h1V11h-1V9.5h3.5v8H14z' fill='black'/%3E%3C/svg%3E")}
+.shell nav button:nth-child(7) span{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 2 12l10 10 10-10zm0 4.2 5.8 5.8-5.8 5.8L6.2 12z' fill='black'/%3E%3C/svg%3E")}
+.shell main select,.shell main textarea,.shell main input:not([type=checkbox]){
+ border-color:#344250;background:#0d141d;color:#edf3f8
+}
+.shell main select option{background:#111922;color:#edf3f8}
+.shell .console,.shell .free-device .console{background:#0d141d;border:1px solid #293541}
+.shell .completion-panel,.shell .feedback{background:#111922;border-color:#293541;color:#dce5ef}
+.shell .completion-panel p,.shell .feedback p{color:#aab6c4}
+@media(max-width:650px){
+ .shell:not(:has(.network-visual)) aside{padding:14px}
+ .shell:not(:has(.network-visual)) nav{margin-top:12px}
+ .shell:not(:has(.network-visual)) main{padding:20px 14px}
+ .shell .home-copy,.shell .home-status,.shell .exam-intro,.shell .study-hero{border-radius:16px}
+ .shell .free-canvas-wrap{height:400px}
+}
