@@ -1,4 +1,20 @@
 
+## Console guiado inspirado no Figma — 2026-11-15
+- Reorganiza o laboratório guiado em um workspace escuro com checklist, topologia, terminal e tutor.
+- Mantém seleção de dispositivos, execução/avaliação de comandos, zoom e estados reais da simulação; em telas menores, retorna ao fluxo vertical.
+
+## Ícones do laboratório livre — 2026-11-14
+- Troca os glifos de PC, switch e roteador no canvas por ícones SVG, mantendo seleção, arraste, portas e zoom.
+
+## Topologia Figma interativa — 2026-11-14
+- Atualiza a topologia guiada com cartões de dispositivo e ícones SVG no estilo da referência do Figma.
+- Adiciona controles de zoom e mantém seleção de PCs/switches ligada ao simulador e aos estados reais das portas.
+- Exibe status de enlaces, VLANs e conectividade simulada; não adiciona roteadores ou protocolos fora do escopo suportado.
+
+## Navegação responsiva — 2026-11-14
+- Reorganiza os atalhos em uma grade compacta no celular, com ícones e rótulos legíveis.
+- Mantém todos os destinos acessíveis e preserva o layout de navegação desktop.
+
 ## Blueprint e seleção adaptativa — 2026-10-10
 
 - Versiona o blueprint CCNA 200-301 v1.1 com seis domínios e pesos oficiais.
