@@ -7,7 +7,8 @@ import {advancedExamQuestions} from '../lib/exam-advanced.ts';
 
 const port=3217;
 const baseURL=`http://127.0.0.1:${port}`;
-const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p',String(port)],{env:{...process.env},stdio:['ignore','pipe','pipe']});
+const testPassword='ui-test-password-at-least-16';
+const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p',String(port)],{env:{...process.env,APP_PASSWORD:testPassword},stdio:['ignore','pipe','pipe']});
 let serverLogs='';server.stdout.on('data',chunk=>serverLogs+=chunk);server.stderr.on('data',chunk=>serverLogs+=chunk);
 let browser;
 try{
@@ -18,20 +19,14 @@ try{
     await new Promise(resolve=>setTimeout(resolve,300));
   }
   assert(ready,'Test server failed to start');
-  for(const [path,expected] of [
-    ['/robots.txt','Disallow: /api/'],
-    ['/sitemap.xml','<lastmod>'],
-    ['/llms.txt','# CCNA Lab AI'],
-  ]){
-    const response=await fetch(`${baseURL}${path}`);
-    assert.equal(response.status,200,`${path} should be publicly available`);
-    assert((await response.text()).includes(expected),`${path} should contain its discovery content`);
+  const robotsResponse=await fetch(`${baseURL}/robots.txt`);
+  assert.equal(robotsResponse.status,200,'robots.txt should remain publicly available');
+  assert((await robotsResponse.text()).includes('Disallow: /'),'robots.txt should disallow public crawling');
+  for(const path of ['/sitemap.xml','/llms.txt',baseURL]){
+    const response=await fetch(`${path.startsWith('http')?path:`${baseURL}${path}`}`,{redirect:'manual',headers:path===baseURL?{accept:'text/markdown'}:{}});
+    assert.equal(response.status,307,`${path} should require authentication`);
+    assert.equal(new URL(response.headers.get('location'),baseURL).pathname,'/login');
   }
-  const markdownResponse=await fetch(baseURL,{headers:{accept:'text/markdown'}});
-  assert.equal(markdownResponse.status,200,'Markdown homepage should be available for agents');
-  assert.match(markdownResponse.headers.get('content-type')??'',/text\/markdown/);
-  assert.match(markdownResponse.headers.get('link')??'',/\/llms\.txt/);
-  assert.match(await markdownResponse.text(),/^# CCNA Lab AI/m);
   await mkdir('ui-artifacts',{recursive:true});
   browser=await chromium.launch({headless:true});
   for(const [name,viewport] of [['mobile',{width:390,height:844}],['desktop',{width:1365,height:900}]]){
@@ -49,6 +44,9 @@ try{
     });
     await page.route('**/api/tutor',route=>route.fulfill({json:{mode:'local'}}));
     await page.goto(baseURL);
+    await page.getByLabel('Senha de acesso').fill(testPassword);
+    await page.getByRole('button',{name:'Entrar',exact:true}).click();
+    await page.waitForURL(`${baseURL}/`);
     const structuredData=await page.locator('script[type="application/ld+json"]').textContent();
     assert.match(structuredData??'',/"@type":"WebSite"/);
     assert.match(structuredData??'',/"@type":"SoftwareApplication"/);
