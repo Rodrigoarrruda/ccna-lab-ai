@@ -1,4 +1,9 @@
 
+## Identidade Figma em todo o site — 2026-11-15
+- Unifica navegação, home, questões, trilha, laboratórios, progresso e arquitetura no tema escuro com acentos teal do console.
+- Atualiza cartões, formulários, feedbacks e controles para os mesmos contrastes e estados visuais.
+- Mantém os ícones SVG dos dispositivos no laboratório guiado e livre e aplica ícones vetoriais consistentes à navegação.
+
 ## Console guiado inspirado no Figma — 2026-11-15
 - Reorganiza o laboratório guiado em um workspace escuro com checklist, topologia, terminal e tutor.
 - Mantém seleção de dispositivos, execução/avaliação de comandos, zoom e estados reais da simulação; em telas menores, retorna ao fluxo vertical.
