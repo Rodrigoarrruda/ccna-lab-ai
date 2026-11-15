@@ -1,4 +1,9 @@
 
+## Acesso privado por senha — 2026-11-15
+- Protege páginas e APIs com `APP_PASSWORD`, sessão assinada em cookie HttpOnly/SameSite e expiração de sete dias.
+- Inclui tela de entrada, encerramento de sessão, limite temporário de tentativas e bloqueio explícito quando a senha não estiver configurada.
+- Desativa indexação e rastreamento público das rotas do site.
+
 ## Identidade Figma em todo o site — 2026-11-15
 - Unifica navegação, home, questões, trilha, laboratórios, progresso e arquitetura no tema escuro com acentos teal do console.
 - Atualiza cartões, formulários, feedbacks e controles para os mesmos contrastes e estados visuais.

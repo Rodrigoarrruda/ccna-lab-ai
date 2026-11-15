@@ -20,9 +20,10 @@ Aplicação educacional Next.js 16.4.6 para prática de configuração Cisco L2,
 3. Configure as variáveis de ambiente **no painel da hospedagem**, nunca no ZIP ou no código publicado. Use `.env.example` apenas como lista de nomes.
 4. Execute `npm test` e `npm run build` (que utiliza `next build --webpack`).
 5. Inicie com `npm start`; mantenha a porta `PORT` gerenciada pela Hostinger e HTTPS habilitado.
-6. Confirme o acesso público, o banco MySQL, a persistência e o funcionamento do tutor e da CLI.
-7. Verifique `/robots.txt`, `/sitemap.xml` e `/llms.txt` após a publicação; remova do hPanel a variável `APP_PASSWORD`, que não é mais usada.
-8. A página inicial também aceita `Accept: text/markdown`; os robôs podem rastrear páginas públicas, mas `/api/` é excluído. `robots.txt` sinaliza `search=yes, ai-train=no` — uma solicitação a crawlers, não um controle técnico de treinamento.
+6. Configure `APP_PASSWORD` no hPanel com pelo menos 16 caracteres antes de publicar; use uma senha longa e exclusiva e não a envie pelo chat, GitHub ou `.env`.
+7. Confirme o acesso por senha, o banco MySQL, a persistência e o funcionamento do tutor e da CLI.
+8. Após publicar, abra o domínio, entre com a senha, confirme o acesso aos laboratórios e teste **Sair**. As sessões expiram após sete dias; as páginas e APIs exigem sessão válida.
+9. O site é privado e sinaliza aos robôs para não rastrear suas rotas. A senha protege o acesso ao app, mas não substitui HTTPS nem as credenciais do MySQL/OpenAI.
 
 O domínio público conectado à aplicação é [ccnalab.com.br](https://ccnalab.com.br). As URLs canônicas de `robots.txt`, sitemap, `llms.txt` e da representação Markdown devem usar esse domínio.
 
@@ -33,8 +34,9 @@ O domínio público conectado à aplicação é [ccnalab.com.br](https://ccnalab
 | `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD` | Conexão com banco MySQL |
 | `OPENAI_API_KEY` | Opcional; habilita tutor IA quando disponível |
 | `OPENAI_MODEL` | Modelo do tutor; exemplo em `.env.example` |
+| `APP_PASSWORD` | Obrigatória; senha exclusiva para acessar páginas e APIs (mínimo 16 caracteres) |
 
-O site e as APIs são públicos. O histórico de tentativas e o progresso de estudo são compartilhados entre visitantes; não envie dados pessoais. Proteja as credenciais do banco e da OpenAI exclusivamente no servidor. Sem chave OpenAI, o tutor responde com fallback local identificado. As tabelas MySQL são criadas no primeiro acesso conforme implementação atual. O banco D1 do projeto original **não é migrado automaticamente**.
+O app é destinado a uso privado individual. Não há contas por usuário; o histórico armazenado no MySQL continua acessível a qualquer pessoa que conheça a senha. A sessão usa cookie HttpOnly, SameSite=Lax e validade de sete dias, com limite temporário de tentativas em memória e baseado no IP informado pelo proxy. Esse limite não substitui proteção distribuída; confirme no hPanel quais cabeçalhos de IP o proxy da Hostinger define. Sem `APP_PASSWORD` válido, o app permanece bloqueado e informa como configurar a variável. Proteja as credenciais do banco e da OpenAI exclusivamente no servidor. Sem chave OpenAI, o tutor responde com fallback local identificado. As tabelas MySQL são criadas no primeiro acesso conforme implementação atual. O banco D1 do projeto original **não é migrado automaticamente**.
 
 ## Comandos de desenvolvimento
 
