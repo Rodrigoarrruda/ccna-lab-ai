@@ -8,7 +8,7 @@ if(!inputPath){
   process.exit(2);
 }
 
-let raw:string;
+let raw;
 try{
   raw=await readFile(inputPath,'utf8');
 }catch{
@@ -16,7 +16,7 @@ try{
   process.exit(2);
 }
 
-let batch:unknown;
+let batch;
 try{
   batch=JSON.parse(raw);
 }catch{
