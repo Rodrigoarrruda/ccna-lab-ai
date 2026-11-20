@@ -1,0 +1,44 @@
+name: Multiagent task
+description: Scoped implementation task with independent verification
+title: "[Agent] "
+labels: []
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective and user impact
+      description: State the observable problem and desired student behavior.
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0 - blocking
+        - P1 - important
+        - P2 - enhancement
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Include success, failure, boundary and regression cases.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Risks and rollback
+    validations:
+      required: true
+  - type: checkboxes
+    id: approvals
+    attributes:
+      label: Required approvals
+      options:
+        - label: QA review before merge
+          required: true
+        - label: Human approval before production deployment
+          required: true
